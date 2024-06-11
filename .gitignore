@@ -1,5 +1,5 @@
 # Docker-postgres
-# data/db/
+data/db/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
