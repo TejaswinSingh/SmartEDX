@@ -1,6 +1,6 @@
 import uuid
 from .department import Department
-from .staff_roles import StaffRole
+from .staff_role import StaffRole
 
 from django.db import models
 from django.core.exceptions import ValidationError
