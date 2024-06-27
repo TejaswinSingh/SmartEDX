@@ -50,6 +50,8 @@ class Lecture(models.Model):
         c = self.course_schedule.course_instance
         if self.date < c.start_date or self.date > c.end_date:
             raise ValidationError(f"Lecture date must lie between {formatted_date(c.start_date)} and {formatted_date(c.end_date)}")
+        if str(self.date.weekday()) != self.course_schedule.weekday:
+            raise ValidationError(f"Date should be a {DAYS_OF_WEEK_CHOICES[self.course_schedule.weekday]} not a {DAYS_OF_WEEK_CHOICES[str(self.date.weekday())]}")
         
     def create_for_schedule(schedule: CourseSchedule, dates: list):
         lectures = []
