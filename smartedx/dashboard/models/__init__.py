@@ -1,6 +1,12 @@
-from .department import Department
-from .programme import Programme
-from .batch import Batch
-from .student import Student
-from .staff import Staff
-from .staff_role import StaffRole
+from .department import Department, DepartmentAdmin
+from .programme import Programme, ProgrammeAdmin
+from .batch import Batch, BatchAdmin
+from .student import Student, StudentAdmin
+from .staff_role import StaffRole, StaffRoleAdmin
+from .staff import Staff, StaffAdmin
+from .course import Course, CourseAdmin 
+from .course_instance import CourseInstance, CourseInstanceAdmin
+from .course_enrollment import CourseEnrollment, CourseEnrollmentAdmin
+from .course_schedule import CourseSchedule, CourseScheduleAdmin
+from .lecture import Lecture, LectureAdmin
+from .attendance_record import AttendanceRecord, AttendanceRecordAdmin
