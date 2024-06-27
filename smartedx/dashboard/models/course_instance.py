@@ -15,9 +15,9 @@ from .utils import (
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from unfold.admin import ModelAdmin
 
 
 def get_sems():
@@ -183,7 +183,7 @@ class CourseInstance(models.Model):
         for l in lectures:
             l.save()
 
-class CourseInstanceAdmin(admin.ModelAdmin):
+class CourseInstanceAdmin(ModelAdmin):
     list_display = (
         'course', 'instructor', 'batch', 
         'start_date', 'end_date', 'get_semester',

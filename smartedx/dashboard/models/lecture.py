@@ -4,9 +4,9 @@ from dashboard.models import CourseSchedule
 from .utils import formatted_date, DAYS_OF_WEEK_CHOICES
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from unfold.admin import ModelAdmin
 
 
 class Lecture(models.Model):
@@ -64,7 +64,7 @@ class Lecture(models.Model):
         for l in lectures:
             l.save()
 
-class LectureAdmin(admin.ModelAdmin):
+class LectureAdmin(ModelAdmin):
     list_display = (
         'get_course', 'get_instructor', 'get_timeslot', 'date',
         'get_weekday', 'is_finished', 'created_at', 'updated_at', 'updated_by'

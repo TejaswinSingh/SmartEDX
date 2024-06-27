@@ -3,8 +3,8 @@ from dashboard.models import Programme
 from .utils import validate_condition, SEMS
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
+from unfold.admin import ModelAdmin
 
 
 def get_sems():
@@ -68,7 +68,7 @@ class Batch(models.Model):
         )
             
 
-class BatchAdmin(admin.ModelAdmin):
+class BatchAdmin(ModelAdmin):
     list_display = (
         'programme', 'admission_date', 'graduation_date',
         'current_semester', 'count_students', 'count_active_courses', 

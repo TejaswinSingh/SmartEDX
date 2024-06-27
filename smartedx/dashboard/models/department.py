@@ -2,10 +2,10 @@ import uuid
 from .utils import MIN_ESTABLISHED_YEAR, current_year
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.utils.text import slugify 
+from django.utils.text import slugify
+from unfold.admin import ModelAdmin
 
 
 class Department(models.Model):
@@ -55,7 +55,7 @@ class Department(models.Model):
         self.slug = slugify(self.name)
     
 
-class DepartmentAdmin(admin.ModelAdmin):
+class DepartmentAdmin(ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     list_display = (
         'name', 'established', 'get_hod', 'count_programmes', 

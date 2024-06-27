@@ -4,9 +4,9 @@ from dashboard.models import (
 )
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from unfold.admin import ModelAdmin
 
 
 class AttendanceRecord(models.Model):
@@ -58,7 +58,7 @@ class AttendanceRecord(models.Model):
             raise ValidationError("This student is not registered to attend the selected lecture")
 
 
-class AttendanceRecordAdmin(admin.ModelAdmin):
+class AttendanceRecordAdmin(ModelAdmin):
     list_display = ('lecture', 'student', 'is_present', 'created_at', 'updated_at', 'updated_by')
 
     def save_model(self, request, obj, form, change):

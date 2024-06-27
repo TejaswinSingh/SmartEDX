@@ -1,8 +1,8 @@
 from dashboard.models import Department
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
+from unfold.admin import ModelAdmin
 
 
 class StaffRole(models.Model):
@@ -35,7 +35,7 @@ class StaffRole(models.Model):
         return self.title
     
 
-class StaffRoleAdmin(admin.ModelAdmin):
+class StaffRoleAdmin(ModelAdmin):
     list_display = (
         'title', 'only_one', 'one_per_dept', 'only_for_dept', 
         'get_staff_count', 'created_at', 'updated_at', 'updated_by'

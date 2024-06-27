@@ -2,8 +2,8 @@ import uuid
 from dashboard.models import Programme
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
+from unfold.admin import ModelAdmin
 
 
 class Course(models.Model):
@@ -40,7 +40,7 @@ class Course(models.Model):
         return f'{self.course_code} - {self.title}'
 
 
-class CourseAdmin(admin.ModelAdmin):
+class CourseAdmin(ModelAdmin):
     list_display = (
         'title', 'course_code', 'programme', 'count_active_instances',
         'created_at', 'updated_at', 'updated_by'

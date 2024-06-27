@@ -4,7 +4,7 @@ from dashboard.models import Batch
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.contrib import admin
+from unfold.admin import ModelAdmin
 
 
 class Student(models.Model):
@@ -49,7 +49,7 @@ class Student(models.Model):
             raise ValidationError('This user is already registered as a staff member.')
         
         
-class StudentAdmin(admin.ModelAdmin):
+class StudentAdmin(ModelAdmin):
     list_display = (
         'full_name', 'get_roll', 'get_department', 
         'get_programme', 'get_batch', 'get_semester',

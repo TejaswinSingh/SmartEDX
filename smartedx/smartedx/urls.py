@@ -21,3 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.urls')),
 ]
+
+admin.site.site_header = 'SmartEDX'     # default: "Django Administration"
+admin.site.index_title = 'Site administration'     # default: "Site administration"
+admin.site.site_title = 'SmartEDX'      # default: "Django site admin"

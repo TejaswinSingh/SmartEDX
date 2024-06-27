@@ -6,9 +6,9 @@ from .utils import (
 )
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from unfold.admin import ModelAdmin
 
 
 class CourseSchedule(models.Model):
@@ -102,7 +102,7 @@ class CourseSchedule(models.Model):
         return weekdays_in_range(self.course_instance.start_date, self.course_instance.end_date, int(self.weekday))
 
 
-class CourseScheduleAdmin(admin.ModelAdmin):
+class CourseScheduleAdmin(ModelAdmin):
     list_display = ('course_instance', 'weekday', 'timeslot', 'created_at', 'updated_at', 'updated_by')
 
     def timeslot(self, obj):

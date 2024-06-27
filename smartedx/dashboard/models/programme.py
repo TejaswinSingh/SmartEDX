@@ -7,9 +7,9 @@ from .utils import (
 )
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from unfold.admin import ModelAdmin
 
 
 class Programme(models.Model):
@@ -62,7 +62,7 @@ class Programme(models.Model):
             raise ValidationError(f"Duration must lie between {l} and {u} years")
         
     
-class ProgrammeAdmin(admin.ModelAdmin):
+class ProgrammeAdmin(ModelAdmin):
     list_display = (
         'name', 'department', 'get_duration', 
         'count_courses', 'count_batches', 'count_students',

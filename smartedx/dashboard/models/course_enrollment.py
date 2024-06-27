@@ -4,9 +4,9 @@ from dashboard.models import (
 )
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from unfold.admin import ModelAdmin
 
 
 class CourseEnrollment(models.Model):
@@ -54,7 +54,7 @@ class CourseEnrollment(models.Model):
             raise ValidationError("Selected student doesn't belong to the batch associated with the course instance")
 
 
-class CourseEnrollmentAdmin(admin.ModelAdmin):
+class CourseEnrollmentAdmin(ModelAdmin):
     list_display = ('course_instance', 'student', 'created_at', 'updated_at', 'updated_by')
 
     def save_model(self, request, obj, form, change):

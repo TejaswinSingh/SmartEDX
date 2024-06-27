@@ -7,7 +7,7 @@ from dashboard.models import (
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.contrib import admin
+from unfold.admin import ModelAdmin
 
 
 def validate_role(instance):
@@ -94,7 +94,7 @@ class Staff(models.Model):
             raise ValidationError('This user is already registered as a student.')
         
 
-class StaffAdmin(admin.ModelAdmin):
+class StaffAdmin(ModelAdmin):
     list_display = (
         'full_name', 'department', 'role', 'count_courses_active', 
         'count_courses', 'created_at', 'updated_at', 'updated_by'
