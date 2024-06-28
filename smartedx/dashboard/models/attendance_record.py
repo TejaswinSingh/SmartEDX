@@ -2,6 +2,7 @@ from dashboard.models import (
     Lecture,
     Student
 )
+from .utils import current_date
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -43,19 +44,21 @@ class AttendanceRecord(models.Model):
         ]
 
     def __str__(self):
-        return f'Lecture({self.lecture}), {self.student}, {self.is_present}'
+        return f'Lecture({self.lecture}), Student({self.student}), Present-{self.is_present}'
     
     def clean(self):
         from dashboard.models import CourseEnrollment
         
         if not hasattr(self, 'lecture') or not hasattr(self, 'student'):
             return
+        if self.lecture.date != current_date():
+            raise ValidationError(f"Attendance records for this lecture can only be created/updated on {self.lecture.date}.")
         if self.lecture.is_finished:
-            raise ValidationError("Can't create/update attendance record as lecture is marked as finished") 
+            raise ValidationError("Can't create/update attendance records for a lecture that is marked as finished.") 
         try:
             self.student.enrollments.get(course_instance_id=self.lecture.course_schedule.course_instance.pk)
         except CourseEnrollment.DoesNotExist:
-            raise ValidationError("This student is not registered to attend the selected lecture")
+            raise ValidationError("This student is not registered to attend the selected lecture.")
 
 
 class AttendanceRecordAdmin(ModelAdmin):

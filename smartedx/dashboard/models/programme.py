@@ -59,7 +59,7 @@ class Programme(models.Model):
             return
         l, u = timedelta_to_years(MIN_PROGRAMME_DURATION), timedelta_to_years(MAX_PROGRAMME_DURATION)
         if self.duration < l or self.duration > u:
-            raise ValidationError(f"Duration must lie between {l} and {u} years")
+            raise ValidationError(f"Duration must lie between {l} and {u} years.")
         
     
 class ProgrammeAdmin(ModelAdmin):

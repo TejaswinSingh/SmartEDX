@@ -18,7 +18,7 @@ def validate_role(instance):
             s = Staff.objects.get(role=instance.role)
             # if the object returned is same as instance, then pass
             if s != instance:
-                raise ValidationError('A staff member with this role already exists')
+                raise ValidationError('A staff member with this role already exists.')
         except Staff.DoesNotExist:
             pass
 
@@ -26,13 +26,13 @@ def validate_role(instance):
         try:
             s = Staff.objects.get(department=instance.department, role=instance.role)
             if s != instance:
-                raise ValidationError(f'A staff member with this role already exists in {instance.department}')
+                raise ValidationError(f'A staff member with this role already exists in {instance.department}.')
         except Staff.DoesNotExist:
             pass
 
     def validate_only_for_dept():
         if instance.department != instance.role.only_for_dept:
-            raise ValidationError(f'This role can be assigned only for staff in {instance.role.only_for_dept}')
+            raise ValidationError(f'This role can be assigned only for staff in {instance.role.only_for_dept}.')
 
     if instance.role.only_one:
         validate_only_one()

@@ -49,9 +49,9 @@ class Lecture(models.Model):
             return
         c = self.course_schedule.course_instance
         if self.date < c.start_date or self.date > c.end_date:
-            raise ValidationError(f"Lecture date must lie between {formatted_date(c.start_date)} and {formatted_date(c.end_date)}")
+            raise ValidationError(f"Lecture date must lie between {formatted_date(c.start_date)} and {formatted_date(c.end_date)}.")
         if str(self.date.weekday()) != self.course_schedule.weekday:
-            raise ValidationError(f"Date should be a {DAYS_OF_WEEK_CHOICES[self.course_schedule.weekday]} not a {DAYS_OF_WEEK_CHOICES[str(self.date.weekday())]}")
+            raise ValidationError(f"Date should be a {DAYS_OF_WEEK_CHOICES[self.course_schedule.weekday]} not a {DAYS_OF_WEEK_CHOICES[str(self.date.weekday())]}.")
         
     def create_for_schedule(schedule: CourseSchedule, dates: list):
         lectures = []
@@ -61,7 +61,7 @@ class Lecture(models.Model):
                 obj.full_clean()
                 lectures.append(obj)
             except ValidationError as e:
-                raise ValidationError(f'{e.message_dict[NON_FIELD_ERRORS][0]} Course Schedule - {schedule}, Date - {d}')
+                raise ValidationError(f'{e.message_dict[NON_FIELD_ERRORS][0]} Course Schedule - {schedule}, Date - {d}.')
         # only save after all objects are validated, i.e all or none
         for l in lectures:
             l.save()

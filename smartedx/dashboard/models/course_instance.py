@@ -90,36 +90,36 @@ class CourseInstance(models.Model):
             return
         validate_condition(
             condition=not self.is_active and current_date() >= self.end_date,
-            error_msg="Can't update archived Course Instance"
+            error_msg="Can't update archived Course Instance."
         )
         validate_condition(
             self.batch.programme != self.course.programme,
-            "Batch and Course must be from the same programme"
+            "Batch and Course must be from the same programme."
         )
         validate_condition(
             self.batch.has_graduated,
-            "This batch has already graduated"
+            "This batch has already graduated."
         )
         validate_condition(
             not (self.end_date > self.start_date),
-            "end date must be greater than start date"
+            "end date must be greater than start date."
         )
         validate_condition(
             (self.start_date < self.batch.admission_date) or (self.start_date > self.batch.graduation_date),
-            "start date can't lie outside batch's programme duration"
+            "start date can't lie outside batch's programme duration."
         )
         validate_condition(
             (self.end_date < self.batch.admission_date) or (self.end_date > self.batch.graduation_date),
-            "end date can't lie outside batch's programme duration"
+            "end date can't lie outside batch's programme duration."
         )
         duration = self.end_date - self.start_date
         validate_condition(
             duration.days > MAX_COURSE_DURATION.days,
-            f"maximum course duration of {timedelta_to_months(MAX_COURSE_DURATION)} months exceeded by {duration.days - MAX_COURSE_DURATION.days} days"
+            f"maximum course duration of {timedelta_to_months(MAX_COURSE_DURATION)} months exceeded by {duration.days - MAX_COURSE_DURATION.days} days."
         )
         validate_condition(
             duration.days < MIN_COURSE_DURATION.days, 
-            f"minimum course duration of {timedelta_to_months(MIN_COURSE_DURATION)} months not met by {MIN_COURSE_DURATION.days - duration.days} days"
+            f"minimum course duration of {timedelta_to_months(MIN_COURSE_DURATION)} months not met by {MIN_COURSE_DURATION.days - duration.days} days."
         )
         # set this field only the first time
         if not self.batch_sem:
@@ -138,7 +138,7 @@ class CourseInstance(models.Model):
 
         students = self.batch.students.all()
         if not students:
-            raise ValidationError("No students exist in the batch")
+            raise ValidationError("No students exist in the batch.")
         records = []
         for s in students:
             try:
@@ -151,7 +151,7 @@ class CourseInstance(models.Model):
                 if ignore_existing and len(e.messages) == 1 and specific_error_message in e.messages:
                     continue
                 else:
-                    raise ValidationError(f'{e.message_dict[NON_FIELD_ERRORS][0]} Student - {s}')
+                    raise ValidationError(f'{e.message_dict[NON_FIELD_ERRORS][0]} Student - {s}.')
         # save enrollment records only if no error occurred
         for r in records:
             r.save()
@@ -162,7 +162,7 @@ class CourseInstance(models.Model):
 
         entries = self.schedule.all()
         if not entries:
-            raise ValidationError("No course schedule entries exist")
+            raise ValidationError("No course schedule entries exist.")
         
         lectures = []
         for s in entries:
@@ -178,7 +178,7 @@ class CourseInstance(models.Model):
                     if ignore_existing and len(e.messages) == 1 and specific_error_message in e.messages:
                         continue
                     else:
-                        raise ValidationError(f'{e.message_dict[NON_FIELD_ERRORS][0]} Course Schedule - {s}, Date - {d}')
+                        raise ValidationError(f'{e.message_dict[NON_FIELD_ERRORS][0]} Course Schedule - {s}, Date - {d}.')
         # only save after all lecture objects are validated, i.e all are created or none are created
         for l in lectures:
             l.save()

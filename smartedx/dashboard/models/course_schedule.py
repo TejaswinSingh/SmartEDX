@@ -61,11 +61,11 @@ class CourseSchedule(models.Model):
 
         validate_condition(
             condition=(not self.course_instance.is_active),
-            error_msg="Selected course instance is inactive"
+            error_msg="Selected course instance is archived."
         )
         validate_condition(
             not (self.end_time > self.start_time),
-            "End time must be greater than start time"
+            "End time must be greater than start time."
         )
 
         # convert to datetime first and then to timedelta
@@ -76,11 +76,11 @@ class CourseSchedule(models.Model):
 
         validate_condition(
             duration < MIN_LECTURE_DURATION,
-            f"Scheduled lecture's duration can't be less than {timedelta_to_mins(MIN_LECTURE_DURATION)} minutes"
+            f"Scheduled lecture's duration can't be less than {timedelta_to_mins(MIN_LECTURE_DURATION)} minutes."
         )
         validate_condition(
             duration > MAX_LECTURE_DURATION,
-            f"Scheduled lecture's duration can't be greater than {timedelta_to_mins(MAX_LECTURE_DURATION)} minutes"
+            f"Scheduled lecture's duration can't be greater than {timedelta_to_mins(MAX_LECTURE_DURATION)} minutes."
         )
         
         # fetch other schedules of the course instance that occur on the same weekday
@@ -92,7 +92,7 @@ class CourseSchedule(models.Model):
                 continue
             st, et = datetime.combine(date, s.start_time), datetime.combine(date, s.end_time)
             if timeslots_clash(start_time, endtime, st, et):
-                raise ValidationError(f"Timeslot is colliding with that of schedule {s}")
+                raise ValidationError(f"Timeslot is colliding with that of schedule {s}.")
 
     def timeslot(self):
         return f'{formatted_time(self.start_time)} - {formatted_time(self.end_time)}'

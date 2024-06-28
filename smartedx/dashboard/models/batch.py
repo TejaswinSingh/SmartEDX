@@ -51,7 +51,7 @@ class Batch(models.Model):
             return
         validate_condition(
             condition=not(self.graduation_date > self.admission_date),
-            error_msg="graduation date must be greater than admission date"
+            error_msg="graduation date must be greater than admission date."
         )
         duration = self.graduation_date - self.admission_date
         # validate_condition(
@@ -60,11 +60,11 @@ class Batch(models.Model):
         # )
         validate_condition(
             duration.days > self.programme.duration_td.days,
-            f"selected programme's duration of {self.programme.duration} years was exceeded by {duration.days - self.programme.duration_td.days} days"
+            f"selected programme's duration of {self.programme.duration} years was exceeded by {duration.days - self.programme.duration_td.days} days."
         )
         validate_condition(
             duration.days < (self.programme.duration_td / 2).days,
-            f"batch cannot graduate in less than half the duration of the selected programme ({self.programme.duration} years)"
+            f"batch cannot graduate in less than half the duration of the selected programme ({self.programme.duration} years)."
         )
             
 

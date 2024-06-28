@@ -51,7 +51,7 @@ class Department(models.Model):
         if not isinstance(self.established, int):
             return
         if self.established < MIN_ESTABLISHED_YEAR or self.established > current_year():
-            raise ValidationError(f"Established year must lie between {MIN_ESTABLISHED_YEAR} and {current_year()}")
+            raise ValidationError(f"Established year must lie between {MIN_ESTABLISHED_YEAR} and {current_year()}.")
         self.slug = slugify(self.name)
     
 

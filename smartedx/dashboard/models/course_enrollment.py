@@ -48,10 +48,10 @@ class CourseEnrollment(models.Model):
         if not hasattr(self, 'course_instance') or not hasattr(self, 'student'):
             return
         if not self.course_instance.is_active:
-            raise ValidationError("Selected course instance is archived")
+            raise ValidationError("Selected course instance is archived.")
         
         if self.student.batch != self.course_instance.batch:
-            raise ValidationError("Selected student doesn't belong to the batch associated with the course instance")
+            raise ValidationError("Selected student doesn't belong to the batch associated with the course instance.")
 
 
 class CourseEnrollmentAdmin(ModelAdmin):
