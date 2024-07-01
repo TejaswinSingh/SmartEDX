@@ -22,6 +22,7 @@ class CourseEnrollment(models.Model):
         on_delete=models.CASCADE,
         related_name='enrollments'
     )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

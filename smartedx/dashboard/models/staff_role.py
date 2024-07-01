@@ -18,6 +18,7 @@ class StaffRole(models.Model):
         null=True,
         related_name='specific_roles'
     )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

@@ -25,6 +25,7 @@ class CourseSchedule(models.Model):
     )
     start_time = models.TimeField()
     end_time = models.TimeField()
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

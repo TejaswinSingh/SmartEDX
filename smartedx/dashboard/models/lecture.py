@@ -20,6 +20,7 @@ class Lecture(models.Model):
     )
     date = models.DateField()
     is_finished = models.BooleanField(default=False)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

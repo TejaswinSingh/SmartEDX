@@ -22,6 +22,7 @@ class Batch(models.Model):
     graduation_date = models.DateField()
     semester = models.CharField(max_length=2, choices=get_sems, default='1')
     has_graduated = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
@@ -56,7 +57,7 @@ class Batch(models.Model):
         duration = self.graduation_date - self.admission_date
         # validate_condition(
         #     duration > MAX_GRADUATION_LIMIT,
-        #     f"maximum graduation limit is {timedelta_to_years(MAX_GRADUATION_LIMIT)} years"
+        #     f"maximum graduation limit is {timedelta_to_years(MAX_GRADUATION_LIMIT)} years."
         # )
         validate_condition(
             duration.days > self.programme.duration_td.days,

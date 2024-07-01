@@ -10,3 +10,9 @@ from .course_enrollment import CourseEnrollment, CourseEnrollmentAdmin
 from .course_schedule import CourseSchedule, CourseScheduleAdmin
 from .lecture import Lecture, LectureAdmin
 from .attendance_record import AttendanceRecord, AttendanceRecordAdmin
+from .content_section import ContentSection, ContentSectionAdmin
+from .section_item_text import SectionItemText, SectionItemTextAdmin
+from .section_item_file import SectionItemFile, SectionItemFileAdmin
+from .section_item_assignment import SectionItemAssignment, SectionItemAssignmentAdmin
+from .assignment_submission import AssignmentSubmission, AssignmentSubmissionAdmin
+from .submission_review import SubmissionReview, SubmissionReviewAdmin

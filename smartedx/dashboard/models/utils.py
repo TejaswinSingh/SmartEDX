@@ -1,8 +1,11 @@
-from datetime import timedelta, date, time
+from datetime import timedelta, date, time, datetime
 
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+
+def current_time():
+    return timezone.now()
 
 def current_year():
     return timezone.now().year
@@ -16,8 +19,11 @@ def timedelta_to_years(td: timedelta):
 def timedelta_to_months(td: timedelta):
     return td.days // 30
 
+def timedelta_to_hours(td):
+    return td.seconds // 3600
+
 def timedelta_to_mins(td: timedelta):
-    return int(td.total_seconds() // 60)
+    return (td.seconds // 60) % 60
 
 def weekdays_in_range(start_date: date, end_date: date, weekday: int):
     cur_date = start_date
@@ -40,6 +46,9 @@ def formatted_date(date: date):
 def formatted_time(t: time):
     return t.strftime("%I:%M %p")
 
+def formatted_datetime(dt: datetime) -> str:
+    return dt.strftime("%b %d %Y %I:%M %p")
+
 
 # NOTE: these variables must be accessible and changeable by admin
 
@@ -52,6 +61,7 @@ MIN_COURSE_DURATION = timedelta(days=(1/12) * 365)  # 1 month
 MAX_LECTURE_DURATION = timedelta(minutes=3 * 60)    # 3 hours
 MIN_LECTURE_DURATION = timedelta(minutes=30)        # 30 mins
 DEFAULT_MIN_ATTENDANCE = '75.00'                    # 75 %
+MAX_ASSIGNMENT_REVIEW_TIME = timedelta(days=7)      # 7 days
 
 SEMS = '1,2,3,4,5,6,7,8'.replace(' ', '')
 

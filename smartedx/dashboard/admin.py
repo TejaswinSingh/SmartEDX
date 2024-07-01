@@ -10,7 +10,13 @@ from .models import (
     CourseEnrollment, CourseEnrollmentAdmin,
     CourseSchedule, CourseScheduleAdmin,
     Lecture, LectureAdmin,
-    AttendanceRecord, AttendanceRecordAdmin
+    AttendanceRecord, AttendanceRecordAdmin,
+    ContentSection, ContentSectionAdmin,
+    SectionItemText, SectionItemTextAdmin,
+    SectionItemFile, SectionItemFileAdmin,
+    SectionItemAssignment, SectionItemAssignmentAdmin,
+    AssignmentSubmission, AssignmentSubmissionAdmin,
+    SubmissionReview, SubmissionReviewAdmin
 )
 from django.contrib import admin
 
@@ -38,3 +44,15 @@ admin.site.register(CourseSchedule, CourseScheduleAdmin)
 admin.site.register(Lecture, LectureAdmin)
 
 admin.site.register(AttendanceRecord, AttendanceRecordAdmin)
+
+admin.site.register(ContentSection, ContentSectionAdmin)
+
+admin.site.register(SectionItemText, SectionItemTextAdmin)
+
+admin.site.register(SectionItemFile, SectionItemFileAdmin)
+
+admin.site.register(SectionItemAssignment, SectionItemAssignmentAdmin)
+
+admin.site.register(AssignmentSubmission, AssignmentSubmissionAdmin)
+
+admin.site.register(SubmissionReview, SubmissionReviewAdmin)

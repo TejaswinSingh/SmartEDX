@@ -23,6 +23,7 @@ class Programme(models.Model):
         related_name='programmes'
     )
     duration = models.IntegerField()    # in years
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

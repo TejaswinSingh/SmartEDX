@@ -59,7 +59,8 @@ class CourseInstance(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     # set to False on end_date (archived), can make changes only before that date
-    is_active = models.BooleanField(default=True) 
+    is_active = models.BooleanField(default=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

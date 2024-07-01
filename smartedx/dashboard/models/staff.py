@@ -61,6 +61,7 @@ class Staff(models.Model):
         on_delete=models.PROTECT,
         related_name='staff'
     )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(

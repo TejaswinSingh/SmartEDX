@@ -24,6 +24,7 @@ class AttendanceRecord(models.Model):
         related_name='attendance_record'
     )
     is_present = models.BooleanField(default=False)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
