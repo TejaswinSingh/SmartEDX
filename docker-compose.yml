@@ -8,23 +8,25 @@ services:
     environment:
       - POSTGRES_DB=test_db
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=electoz
+      - POSTGRES_PASSWORD=postgres
   web:
     build: .
     command: >
       bash -c "python smartedx/manage.py migrate &&
                python smartedx/manage.py makemigrations dashboard &&
                python smartedx/manage.py migrate &&
-               python smartedx/manage.py createsuperuser --noinput &&
+               # python smartedx/manage.py createsuperuser --noinput &&
+               # python smartedx/manage.py collectstatic &&
                python smartedx/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     environment:
+      - SECRET_KEY=please_change_me
       - POSTGRES_NAME=test_db
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=electoz
+      - POSTGRES_PASSWORD=postgres
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@example.com
       - DJANGO_SUPERUSER_PASSWORD=admin123

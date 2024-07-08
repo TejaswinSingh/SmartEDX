@@ -1,6 +1,7 @@
 # added
 garage/
 mediafiles/
+staticfiles/
 
 # Docker-postgres
 data/db/
