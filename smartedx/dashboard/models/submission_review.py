@@ -54,7 +54,7 @@ class SubmissionReview(models.Model):
         end = assignment.ends_at
 
         if (cur - end) > MAX_ASSIGNMENT_REVIEW_TIME:
-            raise ValidationError(f"Reviews for this assignment could be created till {formatted_datetime(end+MAX_ASSIGNMENT_REVIEW_TIME)} only.")
+            raise ValidationError(f"Reviews for this assignment were closed at {formatted_datetime(end+MAX_ASSIGNMENT_REVIEW_TIME)}.")
         
         if self.grade < assignment.min_grade or self.grade > assignment.max_grade:
             raise ValidationError(f"Grade assigned must be between {assignment.min_grade} and {assignment.max_grade}.")

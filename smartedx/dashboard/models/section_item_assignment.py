@@ -1,6 +1,7 @@
 from decimal import Decimal
 from datetime import datetime
 from dashboard.models import ContentSection
+from .utils import CustomFileField, MAX_FILE_UPLOAD_SIZE, ALLOWED_CONTENT_TYPES
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -22,6 +23,12 @@ class SectionItemAssignment(models.Model):
     )
     description = models.CharField(max_length=2000)
     file = models.FileField(upload_to=file_path, max_length=255)
+    file = CustomFileField(
+        upload_to=file_path, 
+        max_length=255, 
+        content_types=ALLOWED_CONTENT_TYPES,
+        max_upload_size=MAX_FILE_UPLOAD_SIZE
+    )
     min_grade = models.DecimalField(
         max_digits=5, decimal_places=2,
         default=Decimal('0.0'),

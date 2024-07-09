@@ -2,7 +2,10 @@ from dashboard.models import (
     SectionItemAssignment,
     Student
 )
-from .utils import current_time, formatted_datetime, timedelta_to_hours,timedelta_to_mins
+from .utils import (
+    current_time, formatted_datetime, timedelta_to_hours, timedelta_to_mins,
+    CustomFileField, MAX_FILE_UPLOAD_SIZE, ALLOWED_CONTENT_TYPES
+)
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -27,7 +30,12 @@ class AssignmentSubmission(models.Model):
         on_delete=models.CASCADE,
         related_name='assignment_submissions'
     )
-    file = models.FileField(upload_to=file_path, max_length=255)
+    file = CustomFileField(
+        upload_to=file_path, 
+        max_length=255,
+        content_types=ALLOWED_CONTENT_TYPES,
+        max_upload_size=MAX_FILE_UPLOAD_SIZE
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

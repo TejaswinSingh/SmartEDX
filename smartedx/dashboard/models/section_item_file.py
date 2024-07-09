@@ -1,4 +1,5 @@
 from dashboard.models import ContentSection
+from .utils import CustomFileField, MAX_FILE_UPLOAD_SIZE, ALLOWED_CONTENT_TYPES
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -18,7 +19,12 @@ class SectionItemFile(models.Model):
         related_name='items_file'
     )
     description = models.CharField(max_length=2000)
-    file = models.FileField(upload_to=file_path, max_length=255)
+    file = CustomFileField(
+        upload_to=file_path, 
+        max_length=255, 
+        content_types=ALLOWED_CONTENT_TYPES,
+        max_upload_size=MAX_FILE_UPLOAD_SIZE
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
