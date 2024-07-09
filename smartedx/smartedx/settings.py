@@ -133,8 +133,31 @@ STATICFILES_DIRS = [
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'mediafiles'
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
+
+if USE_S3:
+    # aws settings
+    AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    # the signed url returned by s3 for private mediafiles won't work without the setting below.
+    # See this: https://github.com/jschneier/django-storages/issues/782#issuecomment-588527860
+    AWS_S3_ADDRESSING_STYLE = os.environ.get('AWS_S3_ADDRESSING_STYLE')
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=2592000",
+    }
+    # public media settings
+    PUBLIC_MEDIAFILES_LOCATION = "media"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIAFILES_LOCATION}/"
+    # private media settings
+    PRIVATE_MEDIAFILES_LOCATION = "media-private"
+    DEFAULT_FILE_STORAGE = 'smartedx.storage_backends.PrivateMediaStorage'
+else:
+    MEDIA_URL = 'media/'
+    MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 
 # Default primary key field type
