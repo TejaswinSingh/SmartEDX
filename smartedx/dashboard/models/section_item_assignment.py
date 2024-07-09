@@ -22,7 +22,6 @@ class SectionItemAssignment(models.Model):
         related_name='items_assignment'
     )
     description = models.CharField(max_length=2000)
-    file = models.FileField(upload_to=file_path, max_length=255)
     file = CustomFileField(
         upload_to=file_path, 
         max_length=255, 
