@@ -33,14 +33,14 @@ class Department(models.Model):
         return f'{self.name}'
     
     def get_current_students(self):
-        from dashboard.models import Student
+        from core.models import Student
         q = Student.objects.none() # empty queryset
         for p in self.programmes.all():
             q |= p.get_current_students()
         return q
     
     def get_hod(self):
-        from dashboard.models import Staff, StaffRole  # circular import fix
+        from core.models import Staff, StaffRole  # circular import fix
         try:
             hod = StaffRole.objects.get(title='Head of Department')
             s = Staff.objects.get(department=self, role=hod)

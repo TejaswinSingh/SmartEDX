@@ -1,4 +1,4 @@
-from dashboard.models import (
+from core.models import (
     CourseInstance,
     Student
 )

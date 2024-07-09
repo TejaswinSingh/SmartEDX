@@ -1,6 +1,6 @@
 import uuid
 from datetime import date
-from dashboard.models import CourseSchedule
+from core.models import CourseSchedule
 from .utils import formatted_date, DAYS_OF_WEEK_CHOICES
 
 from django.db import models

@@ -1,6 +1,6 @@
 from decimal import Decimal
 from datetime import datetime
-from dashboard.models import ContentSection
+from core.models import ContentSection
 from .utils import CustomFileField, MAX_FILE_UPLOAD_SIZE, ALLOWED_CONTENT_TYPES
 
 from django.db import models

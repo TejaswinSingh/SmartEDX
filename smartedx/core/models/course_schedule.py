@@ -1,5 +1,5 @@
 from datetime import datetime, time
-from dashboard.models import CourseInstance
+from core.models import CourseInstance
 from .utils import (
     weekdays_in_range ,timedelta_to_mins, validate_condition, formatted_time,
     DAYS_OF_WEEK_CHOICES, MAX_LECTURE_DURATION, MIN_LECTURE_DURATION

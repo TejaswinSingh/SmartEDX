@@ -1,5 +1,5 @@
 import uuid
-from dashboard.models import (
+from core.models import (
     Department,
     StaffRole
 )

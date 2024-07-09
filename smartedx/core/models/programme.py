@@ -1,6 +1,6 @@
 import uuid
 from datetime import timedelta
-from dashboard.models import Department
+from core.models import Department
 from .utils import (
     current_date, timedelta_to_years,
     MAX_PROGRAMME_DURATION, MIN_PROGRAMME_DURATION, 
@@ -49,7 +49,7 @@ class Programme(models.Model):
         return self.batches.filter(graduation_date__gt=current_date(), has_graduated=False)
 
     def get_current_students(self):
-        from dashboard.models import Student
+        from core.models import Student
         q = Student.objects.none() # empty queryset
         for b in self.get_current_batches():
             q |= b.students.all()

@@ -1,4 +1,4 @@
-from dashboard.models import (
+from core.models import (
     Lecture,
     Student
 )
@@ -48,7 +48,7 @@ class AttendanceRecord(models.Model):
         return f'Lecture({self.lecture}), Student({self.student}), Present-{self.is_present}'
     
     def clean(self):
-        from dashboard.models import CourseEnrollment
+        from core.models import CourseEnrollment
         
         if not hasattr(self, 'lecture') or not hasattr(self, 'student'):
             return

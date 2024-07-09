@@ -12,7 +12,7 @@ services:
   web:
     build: .
     command: >
-      bash -c "python smartedx/manage.py makemigrations dashboard &&
+      bash -c "python smartedx/manage.py makemigrations core &&
                python smartedx/manage.py migrate &&
                python smartedx/manage.py createsuperuser --noinput &&
                python smartedx/manage.py collectstatic --noinput &&

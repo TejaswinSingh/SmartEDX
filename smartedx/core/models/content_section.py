@@ -1,4 +1,4 @@
-from dashboard.models import CourseInstance
+from core.models import CourseInstance
 
 from django.db import models
 from django.contrib.auth.models import User

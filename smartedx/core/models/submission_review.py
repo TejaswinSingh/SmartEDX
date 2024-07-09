@@ -1,5 +1,5 @@
 from decimal import Decimal
-from dashboard.models import AssignmentSubmission
+from core.models import AssignmentSubmission
 from .utils import (
     current_time, formatted_datetime,
     MAX_ASSIGNMENT_REVIEW_TIME

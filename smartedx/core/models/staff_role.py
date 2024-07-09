@@ -1,4 +1,4 @@
-from dashboard.models import Department
+from core.models import Department
 
 from django.db import models
 from django.contrib.auth.models import User

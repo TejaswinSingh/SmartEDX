@@ -1,5 +1,5 @@
 import uuid
-from dashboard.models import Batch
+from core.models import Batch
 
 from django.db import models
 from django.core.exceptions import ValidationError

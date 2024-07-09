@@ -1,4 +1,4 @@
-from dashboard.models import (
+from core.models import (
     SectionItemAssignment,
     Student
 )
@@ -60,7 +60,7 @@ class AssignmentSubmission(models.Model):
         return f'submitted by {self.student.full_name()} for {self.assignment}'
     
     def clean(self):
-        from dashboard.models import CourseEnrollment
+        from core.models import CourseEnrollment
 
         if not hasattr(self, 'assignment') or not hasattr(self, 'student'):
             return

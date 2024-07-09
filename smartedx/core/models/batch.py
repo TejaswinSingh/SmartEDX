@@ -1,5 +1,5 @@
 from datetime import date
-from dashboard.models import Programme
+from core.models import Programme
 from .utils import validate_condition, SEMS
 
 from django.db import models

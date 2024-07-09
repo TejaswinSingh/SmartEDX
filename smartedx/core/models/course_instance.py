@@ -1,7 +1,7 @@
 import uuid
 from datetime import date
 from decimal import Decimal
-from dashboard.models import (
+from core.models import (
     Course,
     Staff,
     Batch,
@@ -127,7 +127,7 @@ class CourseInstance(models.Model):
             self.batch_sem = self.batch.semester
 
     def get_finished_lectures(self):
-        from dashboard.models import Lecture
+        from core.models import Lecture
         q = Lecture.objects.none() # empty queryset
         for s in self.schedule.all():
             q |= s.lectures.filter(is_finished=True, date__lte=current_date())
@@ -135,7 +135,7 @@ class CourseInstance(models.Model):
 
     def enroll_batch(self, ignore_existing=False):
         """ enrolls every student in the batch for the course """
-        from dashboard.models import CourseEnrollment
+        from core.models import CourseEnrollment
 
         students = self.batch.students.all()
         if not students:
@@ -159,7 +159,7 @@ class CourseInstance(models.Model):
 
     def create_lectures(self, ignore_existing=False):
         """ creates lectures b/w start date and end date using course schedule """
-        from dashboard.models import Lecture    # circular import fix
+        from core.models import Lecture    # circular import fix
 
         entries = self.schedule.all()
         if not entries:

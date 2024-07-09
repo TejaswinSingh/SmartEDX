@@ -1,5 +1,5 @@
 import uuid
-from dashboard.models import Programme
+from core.models import Programme
 
 from django.db import models
 from django.contrib.auth.models import User
