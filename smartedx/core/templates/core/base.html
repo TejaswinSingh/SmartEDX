@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %} SmartEDX — Home {% endblock %}</title>
+
+        <!-- Shoelace CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css" />
+        <link rel="stylesheet" href="{% static 'core/css/base.css' %}?{% now 'U' %}">
+        <link rel="stylesheet" href="{% static 'core/css/fonts.css' %}?{% now 'U' %}">
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+        
+    </head>
+
+    <body class="ubuntu-regular">
+
+        <div class="navbar ubuntu-regular">
+            <div class="navbar-crown">&nbsp;</div>
+           
+            <ul class="navbar-ul">
+                <li> <a href="/">
+                    <img src="{% static 'core/img/logo-white2.png' %}" alt="smartedx logo" height="30" width="35">
+                </a> </li>
+                <li><a href="default.asp">Home</a></li>
+                <li><a href="news.asp">News</a></li>
+                <li><a href="contact.asp">Contact</a></li>
+                <li><a href="about.asp">About</a></li>
+            </ul> 
+
+        </div>
+
+        <div id="body-container" class="ubuntu-regular">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        {% block footer %}
+        {% endblock %}
+
+        <!-- Shoelace JS -->
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"></script>
+    </body>
+    
+</html>

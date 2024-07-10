@@ -19,7 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include('core.urls')),
+    path('', include('core.urls')),
 ]
 
 admin.site.site_header = 'SmartEDX'                 # default: "Django Administration"
