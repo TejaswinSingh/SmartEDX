@@ -34,7 +34,7 @@
     
                 <a href='/logout/' style="font-size: small; color: #1535a4">Forgot Password?</a>
             
-                <sl-button type="submit" variant="neutral" class="black" size="small" style="width:100%; margin-top: 10px;"> 
+                <sl-button type="submit" variant="neutral" class="blue" size="small" style="width:100%; margin-top: 10px;"> 
                     <span style="font-size: 1.2em;"> Login </span> 
                 </sl-button>
             </form>
@@ -79,6 +79,9 @@
             justify-content: center;
             align-items: center;
             flex-direction: column; 
+        }
+        sl-button.blue::part(base) {
+            background: linear-gradient(90deg, #132c88, #1e6fba);
         }
         /* Small Devices, Tablets */
         @media only screen and (max-width : 768px) {

@@ -18,13 +18,14 @@ a {
 }
 
 .navbar {
-    background-color: #132c88;
+    /* background-color: #132c88; */
+    background: linear-gradient(45deg, #132c88, #1e6fba);
     width: 100%;
     height: 3.5em;
 }
 
 .navbar-crown {
-    background-color: rgb(185, 103, 4);
+    background: linear-gradient(45deg, rgb(185, 103, 4), rgb(255, 180, 90));
     width: 100%;
     height: 0.6vh;
     color: rgb(185, 103, 4);
@@ -72,14 +73,16 @@ sl-input {
     --sl-input-focus-ring-offset: 1px;
 }
 
-sl-button.black::part(base) {
+sl-button.blue::part(base) {
     border-radius: 4px;
+    /* background: linear-gradient(90deg, #132c88, #1e6fba); */
     background-color: #1535a4;
     color: white;
 }
 
-sl-button.black::part(base):hover {
-    background-color: #294cc8;
+sl-button.blue::part(base):hover {
+    /* background: linear-gradient(270deg, #132c88, #1e6fba); */
+    opacity: 0.9;
 }
 
 /* Small Devices, Tablets */
