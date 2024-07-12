@@ -25,3 +25,10 @@ urlpatterns = [
 admin.site.site_header = 'SmartEDX'                 # default: "Django Administration"
 admin.site.index_title = 'Site administration'      # default: "Site administration"
 admin.site.site_title = 'SmartEDX'                  # default: "Django site admin"
+
+
+# Error handlers
+handler400 = 'core.views.custom_bad_request_view'
+handler403 = 'core.views.custom_permission_denied_view'
+handler404 = 'core.views.custom_page_not_found_view'
+handler500 = 'core.views.custom_error_view'

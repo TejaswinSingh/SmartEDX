@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %} SmartEDX — Home {% endblock %}</title>
 
-        <!-- Shoelace CSS -->
+        <!-- CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css" />
         <link rel="stylesheet" href="{% static 'core/css/base.css' %}?{% now 'U' %}">
         <link rel="stylesheet" href="{% static 'core/css/fonts.css' %}?{% now 'U' %}">
@@ -22,10 +22,10 @@
 
     <body class="ubuntu-regular">
 
+        <div class="navbar-crown">&nbsp;</div>
+        
         <div class="navbar ubuntu-regular">
-            <div class="navbar-crown">&nbsp;</div>
-           
-            <ul class="navbar-ul">
+            <ul class="navbar-ul" style="text-align: center; margin-left: -5vw;">
                 <li> <a href="/">
                     <img src="{% static 'core/img/logo-white2.png' %}" alt="smartedx logo" height="30" width="35">
                 </a> </li>
@@ -34,9 +34,10 @@
                 <li><a href="contact.asp">Contact</a></li>
                 <li><a href="about.asp">About</a></li>
             </ul> 
-
+            <!-- <div class="navbar-crown" style="margin-top: 10px;">&nbsp;</div> -->
         </div>
 
+        
         <div id="body-container" class="ubuntu-regular">
             {% block content %}
             {% endblock %}

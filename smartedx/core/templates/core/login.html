@@ -6,56 +6,71 @@
 {% block content %}
 
     <div id="content-div">
-        <sl-card class="card-basic" >
-
-            <div slot="header" style="display: flex; align-items: center; justify-content: center; height: 20vh;">
-                <div style="display: flex; flex-direction: column; align-items: center;">
-                    <img src="{% static 'core/img/logo-text.png' %}" alt="smartedx logo" height="65" width="65">
-                    <div style="margin-top: 1rem; font-size: small; color: #1535a4;">
-                        Smart Learning for a Smart Future
+        
+        <div id="inner-div" style="display: flex; flex-direction: column; align-items: center; margin-top: 0;">
+            <sl-card class="card-basic">
+        
+                <div slot="header" style="display: flex; align-items: center; justify-content: center; height: 20vh;">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <img src="{% static 'core/img/logo-text.png' %}" alt="smartedx logo" height="65" width="65">
+                        <div style="margin-top: 1rem; font-size: small; color: #1535a4;">
+                            Smart Learning for a Smart Future
+                        </div>
                     </div>
                 </div>
-            </div>
-    
-            <form method="post" action="/login/">
-                {% csrf_token %}
-            
-                <sl-input label="Username" name="username" type="text" required autofocus autocapitalize="none" autocomplete="username" maxlength="150" size="small" value="{% if form.username.value != None %}{{ form.username.value }}{% endif %}">
-                </sl-input>
-                {% for error in form.username.errors %}
-                    <div class="error">{{ error }}</div>
-                {% endfor %}
-            
-                <sl-input label="Password" name="password" type="password" required autocomplete="current-password" password-toggle size="small" style="margin-top: 1vw; margin-bottom: 0.5vw;" value="{% if form.password.value != None %}{{ form.password.value }}{% endif %}">
-                </sl-input>
-                {% for error in form.password.errors %}
-                    <div class="error">{{ error }}</div>
-                {% endfor %}
-    
-                <a href='/logout/' style="font-size: small; color: #1535a4">Forgot Password?</a>
-            
-                <sl-button type="submit" variant="neutral" class="blue" size="small" style="width:100%; margin-top: 10px;"> 
-                    <span style="font-size: 1.2em;"> Login </span> 
-                </sl-button>
-            </form>
-
-            <sl-divider></sl-divider>
-    
-            {% if form.non_field_errors %}
-                <sl-alert variant="danger" open>
-                    <sl-icon slot="icon" name="exclamation-circle"></sl-icon>
-                    {% for error in form.non_field_errors %}
+        
+                {% if next_url %}
+                <form method="post" action="/login/?next={{ next_url }}">
+                {% else %}
+                <form method="post" action="/login/">
+                {% endif %}
+                    {% csrf_token %}
+                
+                    <sl-input label="Username" name="username" type="text" required autofocus autocapitalize="none" autocomplete="username" maxlength="150" size="small" value="{% if form.username.value != None %}{{ form.username.value }}{% endif %}">
+                    </sl-input>
+                    {% for error in form.username.errors %}
                         <div class="error">{{ error }}</div>
                     {% endfor %}
-                </sl-alert> 
-            {% endif %}
+                
+                    <sl-input label="Password" name="password" type="password" required autocomplete="current-password" password-toggle size="small" style="margin-top: 1vw; margin-bottom: 0.5vw;" value="{% if form.password.value != None %}{{ form.password.value }}{% endif %}">
+                    </sl-input>
+                    {% for error in form.password.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+        
+                    <a href='/logout/' style="font-size: small; color: #1535a4">Forgot Password?</a>
+                
+                    <sl-button type="submit" variant="neutral" class="blue" size="small" style="width:100%; margin-top: 10px;"> 
+                        <span style="font-size: 1.2em;"> Login </span> 
+                    </sl-button>
+                </form>
+        
+                <sl-divider></sl-divider>
+        
+                {% if form.non_field_errors %}
+                    <sl-alert variant="danger" open>
+                        <sl-icon slot="icon" name="exclamation-circle"></sl-icon>
+                        {% for error in form.non_field_errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </sl-alert> 
+                {% endif %}
+                
+            </sl-card>
             
-        </sl-card>
-        <span style="margin-top: 3vh !important; font-size: small; color: #6378c5 !important;" >
-            <a href='/logout/' style="color: #6378c5 !important;">Contact Administrator</a>
-            |
-            <a href='/logout/' style="color: #6378c5 !important;">Report Issue</a>
-        </span>
+            <span style="margin-top: 3vh; font-size: small; color: #6378c5;">
+                <a href='/logout/' style="color: #6378c5;">Contact Administrator</a>
+                                            |
+                <a href='/logout/' style="color: #6378c5;">Report Issue</a>
+            </span>
+        </div>
+        
+
+        <div class="gif">
+            <video width="200" height="200" autoplay="autoplay" loop muted>
+                <source src="{% static 'core/vid/login.mp4' %}" type="video/mp4">
+            </video> 
+        </div>
     </div>
     
     <style>
@@ -66,7 +81,15 @@
         /* .card-basic {
             box-shadow: 0 4px 8px rgba(18, 71, 186, 0.3);
         } */
-        #body-container{
+        sl-card {
+            --border-color: rgb(255, 180, 90);
+            --border-width: 1px;
+        }
+        /* divide b/w card header and body  */
+        sl-card::part(header) {
+            border-bottom: 1px solid rgb(255, 180, 90, 0.5);
+        }
+        #body-container {
             height: 100%;
             width: 100%;
             margin: 0;
@@ -78,32 +101,51 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column; 
+            flex-direction: column; /* Vertical by default */
         }
         sl-button.blue::part(base) {
             background: linear-gradient(90deg, #132c88, #1e6fba);
         }
         /* Small Devices, Tablets */
-        @media only screen and (max-width : 768px) {
-            sl-card {
-                max-width: 70vw;
-                min-width: 70vw;
-            }
+        @media only screen and (max-width: 768px) {
             #content-div {
-                margin-top: -15vh; /* a bit higher rather than the exact center */
+                flex-direction: column; /* vertical alignment on smaller screens */
+                margin-top: 5vh;
+            }
+            .gif {
+                margin-top: 0vh;
+            }
+            sl-card {
+                max-width: 72vw !important;
+                min-width: 72vw !important;
             }
         }
-
         /* Medium Devices, Desktops */
-        @media only screen and (min-width : 769px) {
+        @media only screen and (min-width: 769px) {
+            #content-div {
+                flex-direction: row; /* Horizontal alignment on larger screens */
+                margin-top: 0vh !important;
+            }
             sl-card {
-                max-width: 25vw;
-                min-width: 25vw;
+                max-width: 27vw !important;
+                min-width: 27vw !important;
+                --border-width: 1.5px;
+            }
+            sl-card::part(header) {
+                border-bottom: 1.3px solid rgb(255, 180, 90, 0.7);
+            }
+            .gif {
+                margin-left: 6vw;
+            }
+            .gif video {
+                height: 380px !important;
+                width: 380px !important;
             }
         }
     </style>  
 
 {% endblock %}
+
 
 {% block footer %}
     <footer>

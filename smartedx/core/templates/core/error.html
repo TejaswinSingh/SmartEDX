@@ -1,0 +1,75 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %} SmartEDX — {{ status }} {{ status_text }} {% endblock %}
+
+{% block content %}
+
+    <div id="content-div">
+
+        {% if status == '400' %}
+            <video width="200" height="200" autoplay="autoplay" loop muted>
+                <source src="{% static 'core/vid/400.mp4' %}" type="video/mp4">
+            </video> 
+        {% elif status == '403' %}
+            <video width="200" height="200" autoplay="autoplay" loop muted>
+                <source src="{% static 'core/vid/403.mp4' %}" type="video/mp4">
+            </video> 
+        {% elif status == '404' %}
+            <video width="200" height="200" autoplay="autoplay" loop muted>
+                <source src="{% static 'core/vid/404.mp4' %}" type="video/mp4">
+            </video> 
+        {% elif status == '500' %}
+            <video width="200" height="200" autoplay="autoplay" loop muted>
+                <source src="{% static 'core/vid/500.mp4' %}" type="video/mp4">
+            </video> 
+        {% else %}
+            <video width="200" height="200" autoplay="autoplay" loop muted>
+                <source src="{% static 'core/vid/400.mp4' %}" type="video/mp4">
+            </video> 
+        {% endif %}
+
+        <h1> {{ status }} - {{ status_text }} </h1>
+        <h3>{{ err_msg }}</h3>
+    </div>
+    
+    <style>
+        #body-container{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #content-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 3vw;
+        }
+        /* Small Devices, Tablets */
+        @media only screen and (max-width : 768px) {
+            #content-div {
+                margin-top: -15vh; /* a bit higher rather than the exact center */
+            }
+        }
+        /* Medium Devices, Desktops */
+        @media only screen and (min-width : 769px) {
+            #content-div video {
+                height: 300px !important;
+                width: 300px !important;
+                margin-top: -10vh;
+            }
+        }
+    </style>  
+
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <a href='/logout/' style="font-size: small; color: #6378c5"> SmartEDX &copy </a>
+    </footer>
+{% endblock %}

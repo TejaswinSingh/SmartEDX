@@ -15,6 +15,7 @@ services:
       bash -c "python smartedx/manage.py makemigrations core &&
                python smartedx/manage.py migrate &&
                python smartedx/manage.py createsuperuser --noinput &&
+               rm -rf smartedx/staticfiles &&
                python smartedx/manage.py collectstatic --noinput &&
                python smartedx/manage.py runserver 0.0.0.0:8000"
     volumes:
