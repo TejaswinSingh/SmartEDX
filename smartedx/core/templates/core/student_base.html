@@ -70,7 +70,7 @@
                 <li><span>School Name</span></li>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Dashboard</a></li>
-                <li><a href="#">My Courses</a></li>
+                <li><a href="{% url 'core:student-my-courses' %}">My Courses</a></li>
                 <li>
                     <sl-icon-button class="search-dialog-open-btn" src="{% static 'core/img/boxicons/bx-search.svg' %}"></sl-icon-button>
                 </li>
@@ -103,8 +103,16 @@
         </div>
 
         <!-- menu drawer -->
-        <sl-drawer label="Menu" placement="start" id="menu-drawer" style="--size: 70vw;">
-            This drawer slides in from the start.
+        <sl-drawer label="Central University of Jammu" placement="start" id="menu-drawer" style="--size: 70vw;">
+            <div id="menu-content"> 
+                <ul style="list-style-type: none; padding: 0;">
+                    <li><a href="#link1">Home</a></li>
+                    <li><a href="#link2">Dashboard</a></li>
+                    <li><a href="{% url 'core:student-my-courses' %}">My Courses</a></li>
+                    <li><a href="#link4">Link 4</a></li>
+                    <li><a href="#link5">Link 5</a></li>
+                </ul>
+            </div>
             <sl-button id="menu-drawer-close-btn" slot="footer" variant="primary">Log Out</sl-button>
         </sl-drawer>
 

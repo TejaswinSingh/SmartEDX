@@ -112,3 +112,15 @@ a {
         --width: 50vw !important;
     }
 }
+
+
+#menu-content a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #1e6fba;
+}
+
+#menu-content a:hover {
+    text-decoration: underline;
+}

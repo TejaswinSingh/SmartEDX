@@ -1,0 +1,172 @@
+{% extends "core/student_base.html" %}
+{% load static %}
+
+{% block title %} {{ student.full_name }} — My Courses {% endblock %}
+
+{% block content %}
+
+    <div id="content-div">
+
+        <div id="inner-div">
+            <div id="breadcrumb-div">
+                <h2> 
+                    <sl-breadcrumb>
+                        <sl-breadcrumb-item>Active Courses</sl-breadcrumb-item>
+                        <sl-breadcrumb-item> SEM {{ student.sem }}</sl-breadcrumb-item>
+                        </sl-breadcrumb>
+                </h2>
+                <h3> <span style="border-bottom: 0.1em solid;">Course Overview</span> </h3>
+            </div>
+    
+            <div id="courses-div">
+    
+                {% for course in courses %}
+    
+                <a href="/">
+                    <sl-card class="card-basic">
+                        <div slot="header" class="card-header">
+                            <h3>{{ course.title }}</h3>
+                            <h5>{{ course.course_code }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div style="font-size: 1.2em; margin-bottom: 0.5em;">{{ course.instructor.name }}</div> 
+                            <div style="font-size: 0.9em;">{{ course.start_date }} - {{ course.end_date }}</div>
+                        </div>
+                    </sl-card>
+                </a>
+                
+    
+                {% endfor %}
+    
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        #body-container {
+            display: flex;
+            justify-content: center;
+        }
+        #content-div {
+            width: 100%;
+            color: #1535a4;
+            padding-left: 5vw;
+            padding-right: 5vw;
+        }
+        sl-card {
+            --border-width: 1px;
+            --border-radius: 0.8em;
+            -webkit-border-radius: 0.8em;
+            -moz-border-radius: 0.8em;
+            border-radius: 0.8em;
+        }
+        /* divide b/w card header and body  */
+        sl-card::part(body) {
+            border-top: 4.5px solid rgb(255, 180, 90, 0.9);
+            opacity: 0.95;
+            background: linear-gradient(45deg, #132c88, #1e6fba);
+            border-bottom-left-radius: 0.8em; 
+            border-bottom-right-radius: 0.8em; 
+            color: white;
+        }
+        .card-header {
+            min-height: 12vh;
+            max-height: 12vh;
+            color: #1535a4;
+        }
+        #courses-div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1em;
+            margin-top: 4vh;
+            margin-bottom: 5vh;
+        }
+        /* Small Devices, Tablets */
+        @media only screen and (max-width: 768px) {
+            sl-card {
+                max-width: 90vw !important;
+                min-width: 90vw !important;
+                /* margin-bottom: 5vh; */
+                --border-color: rgba(184, 180, 176, 0.3);
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+            }
+        }
+        /* Medium Devices, Desktops */
+        @media only screen and (min-width: 769px) {
+            sl-card {
+                /* max-width: 100% !important; */
+                max-width: 16vw !important;
+                min-width: 16vw !important;
+                min-height: 20vw !important;
+                max-height: 100% !important;
+                --border-radius: 0.8em;
+                -webkit-border-radius: 0.8em;
+                -moz-border-radius: 0.8em;
+                border-radius: 0.8em;
+                display: flex;
+                flex-direction: column;
+                height: 100%;                
+            }
+            sl-card::part(header) {
+                min-height: 10vw;
+                background-color: rgb(204, 200, 200, 0.1) !important;
+            }
+            sl-card::part(body) {
+                border-bottom-left-radius: 0.5em; 
+                border-bottom-right-radius: 0.5em; 
+                height: 100%;
+                min-height: 10vw;
+            }
+            #breadcrumb-div {
+                margin-left: 0vw;
+                font-size: 1.5em;
+            }
+            sl-breadcrumb-item::part(label) {
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+            #courses-div {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(16vw, auto)); /* Columns will fit to content */
+                gap: 1vw; /* Add spacing between items */
+                column-gap: 1vw; /* Set horizontal gap */
+                margin-top: 0vh;
+                padding-top: 10vh;
+                padding-bottom: 5vw;
+                max-width: 100%;
+                justify-items: center;
+                justify-content: center;
+                grid-auto-rows: 1fr; /* Make all rows the same height */
+                align-items: stretch;
+                margin: 0 auto; /* Center the grid within the container */
+            }
+            #inner-div {
+                max-width: 50vw;
+                margin: auto;
+            }
+            #content-div {
+                padding-top: 5vh;
+                padding-left: 5vw;
+                padding-right: 5vw;
+                background-color: rgba(204, 200, 200, 0.1);
+                border-radius: 0em;
+                border-bottom-left-radius: 5em;
+                border-bottom-right-radius: 5em;
+                box-shadow: rgba(169, 167, 166, 1) 0 4px 8px;
+                max-width: 60vw;
+                margin-top: 0;
+                margin-bottom: 0vh;
+                border-top: transparent;
+                border-bottom: transparent;
+            }
+            a:hover {
+                opacity: 0.8;
+            }
+        }
+    </style>
+
+{% endblock %}

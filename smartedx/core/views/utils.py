@@ -1,4 +1,5 @@
 from functools import wraps
+from core.models import CourseInstance
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -17,3 +18,11 @@ def user_passes_test_or_render_error(test_func, template="core/error.html", cont
                 return render(request, template, context, status=context['status'])
         return _wrapped_view
     return decorator
+
+
+def annotate_course_instance(c: CourseInstance):
+    course = c.course
+    c.title = course.title
+    c.course_code = course.course_code
+    c.instructor.name = c.instructor.full_name()
+    return c

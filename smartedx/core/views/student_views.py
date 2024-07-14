@@ -1,4 +1,5 @@
-from .utils import user_passes_test_or_render_error
+from .utils import user_passes_test_or_render_error, annotate_course_instance
+from core.models import CourseInstance
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -12,4 +13,24 @@ def student_check(user):
 
 @user_passes_test_or_render_error(student_check, template=err_template, context=context)
 def student_dashboard(request):
-    return render(request, "core/student_base.html")
+    student = request.user.student
+    student.full_name = student.full_name()
+    context = {
+        "student": student,
+    }
+    return render(request, "core/student_base.html", context)
+
+
+@user_passes_test_or_render_error(student_check, template=err_template, context=context)
+def student_courses(request):
+    student = request.user.student
+    student.full_name = student.full_name()
+    student.sem = student.batch.semester
+    courses = []
+    for c in student.batch.courses.filter(is_active=True):
+        courses.append(annotate_course_instance(c)) # add some extra details to each course instance
+    context = {
+        "student": student,
+        "courses": courses,
+    }
+    return render(request, "core/student_my_courses.html", context)

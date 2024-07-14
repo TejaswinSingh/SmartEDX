@@ -2,10 +2,11 @@ from .authentication import (
     login_view, 
     logout_view, 
     redirect_user,
-    tell
+    tell,
 )
 from .student_views import (
     student_dashboard,
+    student_courses,
 )
 from .error_handlers import (
     custom_bad_request_view,
