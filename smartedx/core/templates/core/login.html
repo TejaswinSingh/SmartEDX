@@ -152,3 +152,20 @@
         <a href='/logout/' style="font-size: small; color: #6378c5"> SmartEDX &copy </a>
     </footer>
 {% endblock %}
+
+{% block page_load_script %}
+    <script type="module">
+        // Replace 'my-button', 'my-card', and 'my-rating' with your custom element names
+        Promise.allSettled([
+            customElements.whenDefined('sl-card'),
+            customElements.whenDefined('sl-input'),
+            customElements.whenDefined('sl-button'),
+            customElements.whenDefined('sl-divider'),
+            customElements.whenDefined('sl-alert'),
+            customElements.whenDefined('sl-icon'),
+        ]).then(() => {
+        // Add the 'ready' class to fade in the body once all elements are defined
+        document.body.classList.add('ready');
+        });
+    </script>
+{% endblock %}

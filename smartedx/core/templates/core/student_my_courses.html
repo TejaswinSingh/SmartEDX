@@ -170,3 +170,25 @@
     </style>
 
 {% endblock %}
+
+{% block page_load_script %}
+
+    <script type="module">
+        // Replace 'my-button', 'my-card', and 'my-rating' with your custom element names
+        Promise.allSettled([
+            customElements.whenDefined('sl-button'),
+            customElements.whenDefined('sl-icon'),
+            customElements.whenDefined('sl-dropdown'),
+            customElements.whenDefined('sl-icon-button'),
+            customElements.whenDefined('sl-menu'),
+            customElements.whenDefined('sl-drawer'),
+            customElements.whenDefined('sl-dialog'),
+            customElements.whenDefined('sl-breadcrumb'),
+            customElements.whenDefined('sl-card'),
+        ]).then(() => {
+        // Add the 'ready' class to fade in the body once all elements are defined
+        document.body.classList.add('ready');
+        });
+    </script>
+
+{% endblock %}

@@ -3,8 +3,8 @@ html, body {
     margin: 0;
 }
 body {
-    opacity: 0;
-  }
+    opacity: 0;   /* for page_load_script */
+}
 
 body.ready {
     opacity: 1;
