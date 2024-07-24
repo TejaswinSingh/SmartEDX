@@ -1,0 +1,604 @@
+{% extends "core/student_base.html" %}
+{% load static %}
+
+{% block title %} {{ course.course_code }} {{ course.title }} {% endblock %}
+
+{% block content %}
+
+    {% if home %}
+        <sl-icon-button class="float-button content-drawer-open-btn" name="list-ul"></sl-icon-button>
+    {% endif %}
+    <div id="content-div" class="ubuntu-regular">
+
+        <sl-card style="display: none;"></sl-card>
+
+        <div id="course-title"> 
+            <strong style="text-decoration: underline;">
+                {{ course.title }}
+            </strong>
+            {% if not course.is_active %}
+                    <sl-badge variant="warning" pill style="margin-left: 10px; font-size: 0.6em !important;">Archived</sl-badge>
+            {% endif %} 
+            <div style="font-size: 0.7em; margin-top: 2em;">
+                <div> <strong>Course Code:</strong> {{ course.course_code }}</div>
+                <div> <strong>Instructor:</strong> {{ course.instructor }} </div>
+                <div> <strong>Starts:</strong> {{ course.start_date }} </div>
+                <div> <strong>Ends:</strong> {{ course.end_date }} </div>
+            </div>
+        </div>
+
+        <sl-divider class="tab-group-divider"></sl-divider>
+
+        <sl-tab-group no-scroll-controls="false" >
+            <sl-tab slot="nav" panel="home" data-href="{% url 'core:student-course-home' course.pk  %}" {% if home %} active {% endif %}> <strong>Home</strong> </sl-tab>
+            <sl-tab slot="nav" panel="attendance" data-href="{% url 'core:student-course-attendance' course.pk  %}" {% if attendance %} active {% endif %}> <strong>Attendance</strong> </sl-tab>
+            <sl-tab slot="nav" panel="grades" data-href="{% url 'core:student-course-grades' course.pk  %}" {% if grades %} active {% endif %}> <strong>Grades</strong> </sl-tab>
+            <sl-tab slot="nav" panel="schedule" data-href="{% url 'core:student-course-schedule' course.pk  %}" {% if schedule %} active {% endif %}> <strong>Schedule</strong> </sl-tab>
+          
+            {% if home %}
+                <sl-tab-panel name="home">
+
+                    {% for section in sections %}
+
+                        <div class="section" id="{{ section.title|slugify }}">
+
+                            <sl-details class="custom-icons" {% if forloop.first %} open {% endif %}>
+                                <div slot="summary" class="summary">
+                                    <strong>{{ section.title }}</strong>
+                                </div>
+                                <sl-icon name="plus-square" slot="expand-icon"></sl-icon>
+                                <sl-icon name="dash-square" slot="collapse-icon"></sl-icon>
+                              
+                                {% for item in section.items %}
+                                    {% if item.type == 'text' %}
+                                        <sl-details open class="text-item" id="{{ item.description|slice:':10'  }}" summary="{{ item.description|slice:':10'  }}..">
+                                            {{ item.description }}
+                                        </sl-details>
+                                    {% elif item.type == 'link' %}
+                                        <sl-details class="link-item" id="{{ item.link|slice:':20'  }}">
+                                            <a href="{{ item.link }}" class="url-link"></a>
+                                            <div slot="summary" class="summary">
+                                                <sl-icon name="link"></sl-icon>
+                                                    <div class="summary-text">
+                                                        <div>URL </div>
+                                                        <div style="font-size: 0.7em;">{{ item.link|slice:":40" }}..</div>
+                                                </div>
+                                            </div>
+                                            <div>{{ item.description }}</div>
+                                        </sl-details>
+                                    {% elif item.type == 'file' %}
+                                        <sl-details class="file-item" id="{{ item.filename }}">
+                                            <div slot="summary" class="summary">
+                                                <sl-icon name="file-earmark-text"></sl-icon>
+                                                <div class="summary-text">
+                                                    <div>FILE</div>
+                                                    <div style="font-size: 0.8em;">{{ item.filename }}</div>
+                                                </div>
+                                            </div>
+                                            <div>{{ item.description }}</div>
+                                            <a href="{{ item.file.url }}">
+                                                <sl-button class="download" variant="neutral" outline size="small" style="width: 25vw; max-width: 100px; margin-top: 10px;"> 
+                                                    <span><sl-icon name="file-earmark-arrow-down" style="color: #1535a4; margin-bottom: -5px;"></sl-icon></span>
+                                                    <span style="font-size: 0.8em;"> Download </span> 
+                                                </sl-button>
+                                            </a>
+                                        </sl-details>
+                                    {% elif item.type == 'assignment' %}
+                                        <sl-details class="assignment-item" id="{{ item.name }}">
+                                            <a href="{% url 'core:student-course-assignment' course_uuid=course.pk assignment_id=item.pk %}" class="url-link"></a>
+                                            <div slot="summary" class="summary">
+                                                <sl-icon name="file-earmark-post"></sl-icon>
+                                                <div class="summary-text">
+                                                    <div>ASSIGNMENT</div>
+                                                    <div style="font-size: 0.8em;">{{ item.name }}</div>
+                                                </div>
+                                                {% if item.submitted %}
+                                                    <sl-badge variant="success" pill style="margin-left: 10px;">Submitted</sl-badge>
+                                                {% endif %}     
+                                            </div>
+                                            <div>{{ item.description }}</div>
+                                        </sl-details>
+                                    {% endif %}
+                                    {% if not forloop.last %}
+                                        <sl-divider></sl-divider>
+                                    {% endif %}
+
+
+                                {% empty %}
+                                        <div style="font-size: 0.9em;">This section doesn't have any items</div>
+                                {% endfor %}
+                            </sl-details>
+
+                        </div>
+
+                    {% empty %}
+                        <h4>No content is added for this course yet</h4>
+                    {% endfor %}
+                
+                </sl-tab-panel>
+
+
+
+                <!-- Table of contents drawer -->
+                <sl-drawer  placement="start" id="content-drawer">
+                    <div slot="label">
+                        <h4 style="text-decoration: underline;">Table of Contents</h4>
+                    </div>
+                    {% for section in sections %}
+                        <style>
+                            sl-details.toc-item::part(base) {
+                                border: none;
+                            }
+                        </style>
+                        <sl-details open class="toc-item" summary="{{ section.title }}">
+                            <a href="#{{ section.title|slugify }}" class="url-link"></a>
+                            <div slot="summary" class="summary">
+                                <strong>{{ section.title }}</strong>
+                            </div>
+                            {% for item in section.items %}
+                                {% if item.type == 'text' %}
+                                    <a href="#{{ item.description|slice:':10'  }}" class="url-link" style="font-size: 0.9em; color: #132c88;">
+                                        {{ item.description|slice:':10'  }}..
+                                    </a>
+                                {% elif item.type == 'link' %}
+                                    <a href="#{{ item.link|slice:':20'  }}" class="url-link" style="font-size: 0.9em; color: #132c88;">
+                                        {{ item.link|slice:':20'  }}..
+                                    </a>
+                                {% elif item.type == 'file' %}
+                                    <a href="#{{ item.filename }}" class="url-link" style="font-size: 0.9em; color: #132c88;">
+                                        {{ item.filename  }}
+                                    </a>
+                                {% elif item.type == 'assignment' %}
+                                    <a href="#{{ item.name }}" class="url-link" style="font-size: 0.9em; color: #132c88;">
+                                        {{ item.name  }}
+                                    </a>
+                                {% endif %}
+                                {% if not forloop.last %}
+                                    <sl-divider></sl-divider>
+                                {% endif %}
+                            {% empty %}
+                                <div style="font-size: 0.9em; color: #132c88;">
+                                    No items
+                                </div>
+                            {% endfor %}
+                        </sl-details>
+                    {% empty %}
+                        <h5>No content is added for this course yet</h5>
+                    {% endfor %}
+                </sl-drawer>
+                  
+                
+
+            {% elif attendance %}
+
+                <sl-tab-panel name="attendance">
+                    <table class="attendance-table " style="margin-top: 0vh;">
+                        <tr>
+                            <th>Lectures held</th>
+                            <td>{{ lectures_held }}</td>
+                        </tr>
+                        <tr>
+                            <th>Lectures attended</th>
+                            <td>{{ lectures_attended }}</td>
+                        </tr>
+                        <tr>
+                            <th>Current Attendance</th>
+                            <td>{{ cur_attendance }} %</td>
+                        </tr>
+                        <tr>
+                            <th>Required Min Attendance</th>
+                            <td>{{ course.min_attendance }} %</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1.2em !important; font-size: 1em;">
+                        <strong>* If you attend the next lecture your attendance will be {{ next_attendance }} %</strong>
+                    </p>
+
+                    {% if lectures %}
+                        <div style="margin-top: 5vh;">
+                            <h4> LAST {{lectures|length}} LECTURES </h4>
+                        </div>
+                        <table class="attendance-table " style="margin-top: 0vh;">
+                            {% for lecture in lectures %}
+                            <tr>
+                                <th>{{ lecture.weekday }}</th>
+                                <td>{{lecture.schedule.start_time|time:"g:i A"}} - {{lecture.schedule.end_time|time:"g:i A"}}</td>
+                                <td>{% if lecture.attended %}
+                                    <sl-tag variant="success"> <sl-icon name="check-lg"></sl-icon>
+                                    </sl-tag>
+                                {% else %}
+                                    <sl-tag variant="danger"> <sl-icon name="x-lg"></sl-icon>
+                                    </sl-tag>
+                                {% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+
+                        <p style=" margin-top: 5vh;">
+                            <sl-tag variant="success"> <sl-icon name="check-lg"></sl-icon></sl-tag>
+                            - marks lectures that you have attended
+                        </p>
+                    {% endif %}
+
+                </sl-tab-panel>
+
+            {% elif grades %}
+
+                <sl-tab-panel name="grades">
+                    
+                    <table class="attendance-table "style="margin-top: 1vh; table-layout: fixed;">
+                        {% if assignments %}
+                            <tr>
+                                <th><strong>Name</strong></th>
+
+                                <td><strong>Grade obtained</strong></td>
+                                <td><strong>Max grade</strong></td>
+                            </tr>
+                        {% endif %}
+
+                        {% for assignment in assignments %}
+                            <tr>
+                                <th>{{ assignment.name }}</th>
+
+                                {% if assignment.submission %}
+                                    {% if assignment.submission.review %}
+                                        <td>{{ assignment.submission.review.grade }}</td>
+                                    {% else %}
+                                        <td>Not graded</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>Not submitted</td>
+                                {% endif %}
+
+                                <td>{{ assignment.max_grade }}</td>
+                            </tr>
+                        {% empty %}
+                            <h4> No assignments to grade </h4>
+                        {% endfor %}
+                    </table>
+                
+                </sl-tab-panel>
+
+            {% elif schedule %}
+
+                <sl-tab-panel name="schedule">
+                    
+                    <sl-card class="card-header schedule" style="width: 100%; box-sizing: border-box; margin-top: 3vh;">
+                        <div slot="header">
+                            <h3> TODAY </h3>
+                        </div>
+                            <div style="width: 100%;">
+                                {% for lecture in lectures_today %}
+                                    <sl-menu-item style="position: relative; margin-bottom: 30px !important;">   
+                                        <span style="position: absolute; left: 0;  color: #1535a4;">Lecture {{forloop.counter}}</span>
+                                        <span style="position: absolute; left: 50%; transform: translateX(-50%); color: #1535a4;">{{lecture.schedule.start_time|time:"g:i A"}} - {{lecture.schedule.end_time|time:"g:i A"}}</span>
+                                        <span style="position: absolute; right: 0;">
+                                            {% if lecture.is_finished %}
+                                                <sl-tag variant="success"> <sl-icon name="check-lg"></sl-icon>
+                                                </sl-tag>
+                                            {% else %}
+                                                <sl-tag variant="danger"> <sl-icon name="x-lg"></sl-icon>
+                                                </sl-tag>
+                                            {% endif %}
+                                        </span>
+                                    </sl-menu-item>
+                                    {% if not forloop.last %}
+                                        <sl-divider></sl-divider>
+                                    {% endif %}
+                                {% empty %}
+                                    <h4>No lectures today</h4>
+                                {% endfor %}
+                            </div>
+                    </sl-card>
+
+                    <sl-card class="card-header schedule" style="width: 100%; box-sizing: border-box; margin-top: 2vh;">
+                        <div slot="header">
+                            <h3> WEEKLY  <sl-badge variant="primary" pill style="margin-left: 5px;">{{lectures_week|length}} lectures</sl-badge></h3>
+                        </div>
+                            <div style="width: 100%;">
+                                {% for lecture in lectures_week %}
+                                    <sl-menu-item style="position: relative; margin-bottom: 30px !important;">   
+                                        <span style="position: absolute; left: 0;  color: #1535a4;">{{ lecture.weekday }}</span>
+                                        <span style="position: absolute; left: 50%; transform: translateX(-50%); color: #1535a4;">{{lecture.schedule.start_time|time:"g:i A"}} - {{lecture.schedule.end_time|time:"g:i A"}}</span>
+                                        <span style="position: absolute; right: 0;">
+                                            {% if lecture.is_finished %}
+                                                <sl-tag variant="success"> <sl-icon name="check-lg"></sl-icon>
+                                                </sl-tag>
+                                            {% else %}
+                                                <sl-tag variant="danger"> <sl-icon name="x-lg"></sl-icon>
+                                                </sl-tag>
+                                            {% endif %}
+                                        </span>
+                                    </sl-menu-item>
+                                    {% if not forloop.last %}
+                                        <sl-divider></sl-divider>
+                                    {% endif %}
+                                {% empty %}
+                                    <h4>No lectures</h4>
+                                {% endfor %}
+                            </div>
+                    </sl-card>
+
+                    <p style=" margin-top: 5vh;">
+                        <sl-tag variant="success"> <sl-icon name="check-lg"></sl-icon></sl-tag>
+                        - marks lectures that are finished
+                    </p>
+
+                </sl-tab-panel>
+
+            {% endif %}
+            
+        </sl-tab-group>
+          
+        <!-- for page_load_script to work -->
+        <div style="display: none;">
+            <sl-tab-panel></sl-tab-panel>
+            <sl-details></sl-details>
+            <sl-icon></sl-icon>
+            <sl-drawer></sl-drawer>
+            <sl-divider></sl-divider>
+            <sl-badge></sl-badge>
+            <sl-card></sl-card>
+            <sl-menu-item></sl-menu-item>
+            <sl-tag></sl-tag>
+            <sl-badge></sl-badge>
+        </div>
+
+    </div>
+
+    <style>
+        body {
+            opacity: 0;
+        }
+        #content-div {
+            padding: 5vh 3vw 0 3vw;
+            color: #1535a4;
+        }
+        .tab-group-divider {
+            margin-top: 2.8vh;
+            --color: #1535a4;
+            --width: 2px;
+        }
+        sl-tab-group {
+            font-size: 1em;
+            --track-color: #1535a4;
+            --indicator-color: #298eec;
+            --track-width: 2px;
+        }
+        sl-tab::part(base) {
+            height: 5vh; /* Set the desired height for the tabs */
+            margin-bottom: 0.4vh;
+            margin-top: -1vh;
+            color: #1535a4;
+        }
+        sl-tab[active]::part(base) {
+            color: #298eec;
+        }
+        #course-title {
+            font-size: 1.5em;
+        }
+        #course-title div div {
+            margin-top: 0.2em;
+        }
+        .float-button {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            background: linear-gradient(45deg, #132c88, #1e6fba);
+            color: white;
+            font-size: 1.5em;
+            border: none;
+            border-top-right-radius: 0.8em;
+            border-bottom-right-radius: 0.8em;
+        }
+        .float-button:hover {
+            opacity: 0.9;
+        }
+        sl-details.text-item::part(base), sl-details.file-item::part(base), sl-details.link-item::part(base), sl-details.assignment-item::part(base) {
+            border: none;
+            box-shadow: none; 
+        }
+        sl-details.text-item::part(summary), sl-details.file-item::part(summary), sl-details.link-item::part(summary), sl-details.assignment-item::part(summary) {
+            border: none; 
+        }
+        .summary {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .summary sl-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        .summary-text {
+            display: flex;
+            flex-direction: column;
+        }
+        sl-details.link-item .summary:hover, sl-details.assignment-item .summary:hover {
+            background-color: rgb(41, 142, 236, 0.3);
+        }
+        sl-button.download::part(base) {
+            border-radius: 8px;
+            border: 1.5px solid #1535a4;
+            color: #1535a4;
+            font-size: 1.125rem;
+            background-color: rgb(255, 255, 255);
+        }
+        sl-button.download::part(base):hover {
+            background-color: rgb(41, 142, 236, 0.1);
+        }
+        sl-button.download::part(base):active {
+            opacity: 0.9;
+            background-color: rgb(41, 142, 236, 0.1);
+        }
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 0.8em;
+            border-style: hidden; 
+            box-shadow: 1 1 1 1px #666; /* this draws the table border  */ 
+        }
+        .attendance-table th, .attendance-table td {
+            padding: 8px 12px;
+            border: 1px solid #132c88;
+            word-wrap: break-word; /* Allows long words to break and wrap onto the next line */
+            word-break: break-word;
+            white-space: normal;
+        }
+        .attendance-table th {
+            background: white;
+            font-weight: normal;
+            color: #132c88;
+            text-align: left;
+            font-size: 1em;
+        }
+        .attendance-table td {
+            font-size: 0.9em;
+        }
+        sl-card.schedule::part(header) {
+            background: linear-gradient(45deg, rgb(19, 44, 136, 0.1), rgb(30, 111, 186, 0.2));
+            /* background-color: rgb(41, 142, 236, 0.3) !important; */
+        }
+        sl-badge::part(base) {
+            border-color: transparent;
+        }
+        /* Small Devices, Tablets */
+        @media only screen and (max-width: 768px) {
+            .float-button {
+                left: auto;
+                right: 0;
+                top: 15%;            
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-top-left-radius: 0.8em;
+                border-bottom-left-radius: 0.8em;
+            }
+            #content-drawer {
+                --size: 70vw;
+            }
+        }
+        /* Medium Devices, Desktops */
+        @media only screen and (min-width: 769px) {
+            #body-container {
+                display: flex;
+                justify-content: center; /* Center horizontally */
+                padding: 20px; /* Optional: Add some padding if needed */
+            }
+            #content-div {
+                max-width: 50vw; /* Adjust max-width as needed */
+                width: 100%;
+            }
+            sl-tab::part(base) {
+                height: 6vh; /* Set the desired height for the tabs */
+                margin-bottom: 0.3vh;
+                margin-top: -1vh;
+                font-size: 1em;
+            }
+            sl-tab-group::part(nav) {
+                font-size: 1em;
+            }
+            .tab-group-divider {
+                margin-top: 5vh;
+                --width: 3px;
+            }
+            sl-tab-group {
+                --track-width: 3px;
+            }
+            #course-title {
+                font-size: 2em;
+            }
+            #course-title div {
+                font-size: 0.8em !important;
+                /* margin-top: 0.5em !important; */
+            }
+            #course-title strong {
+                margin-bottom: 10vh !important;
+            }
+        }
+    </style>
+
+    <!-- tab navigation script -->
+    <script>
+        document.querySelectorAll('sl-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const href = tab.getAttribute('data-href');
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+    </script>
+
+    <!-- table of contents drawer script -->
+    <script>
+        const drawer_c = document.querySelector('#content-drawer');
+        const drawer_c_o = document.querySelector('.content-drawer-open-btn');
+    
+        drawer_c_o.addEventListener('click', () => drawer_c.show());
+    </script>
+
+    <!-- link items script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('sl-details.link-item .summary, sl-details.assignment-item .summary, sl-details.toc-item .summary').forEach(summary => {
+                summary.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const urlLink = summary.parentElement.querySelector('.url-link');
+                    window.location.href = urlLink.href;
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const links = document.querySelectorAll('a.url-link');
+        
+            links.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+        
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+        
+                    if (targetElement) {
+                        const parentDetails = targetElement.closest('sl-details.custom-icons');
+        
+                        if (parentDetails) {
+                            parentDetails.show().then(() => {
+                                targetElement.scrollIntoView({ behavior: 'smooth' });
+                            });
+                        } else {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block page_load_script %}
+
+    <script type="module">
+        // Replace 'my-button', 'my-card', and 'my-rating' with your custom element names
+        Promise.allSettled([
+            customElements.whenDefined('sl-card'),
+            customElements.whenDefined('sl-tab-group'),
+            customElements.whenDefined('sl-tab'),
+            customElements.whenDefined('sl-tab-panel'),
+            customElements.whenDefined('sl-drawer'),
+            customElements.whenDefined('sl-button'),
+            customElements.whenDefined('sl-details'),
+            customElements.whenDefined('sl-icon'),
+            customElements.whenDefined('sl-divider'),
+            customElements.whenDefined('sl-badge'),
+            customElements.whenDefined('sl-menu-item'),
+            customElements.whenDefined('sl-tag'),
+        ]).then(() => {
+        // Add the 'ready' class to fade in the body once all elements are defined
+        document.body.classList.add('ready');
+        document.body.style.opacity = 1;
+        });
+    </script>
+{% endblock %}

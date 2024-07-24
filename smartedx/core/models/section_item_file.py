@@ -1,3 +1,4 @@
+import os
 from core.models import ContentSection
 from .utils import CustomFileField, MAX_FILE_UPLOAD_SIZE, ALLOWED_CONTENT_TYPES
 
@@ -45,6 +46,9 @@ class SectionItemFile(models.Model):
     def clean(self):
         if hasattr(self, 'content_section') and not self.content_section.course_instance.is_active:
             raise ValidationError("Course instance for the selected content section is archived.")
+    
+    def filename(self):
+        return os.path.basename(self.file.name)
         
 
 class SectionItemFileAdmin(ModelAdmin):

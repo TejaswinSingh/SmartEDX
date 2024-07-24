@@ -22,11 +22,13 @@
     
                 {% for course in courses %}
     
-                <a href="/">
+                <a href="{% url 'core:student-course-home' course.pk  %}">
                     <sl-card class="card-basic">
                         <div slot="header" class="card-header">
-                            <h3>{{ course.title }}</h3>
-                            <h5>{{ course.course_code }}</h5>
+                            <strong>
+                                <div style="font-size: 1.2em; margin-bottom: 0.9em;">{{ course.title }}</div> 
+                                <div style="font-size: 0.9em;">{{ course.course_code }}</div>
+                            </strong>
                         </div>
                         <div class="card-body">
                             <div style="font-size: 1.2em; margin-bottom: 0.5em;">{{ course.instructor.name }}</div> 
@@ -34,8 +36,12 @@
                         </div>
                     </sl-card>
                 </a>
+
+                {% empty %}
                 
-    
+                    <h2> You don't have any active courses </h2>
+                    <sl-card style="display: none;"></sl-card>
+
                 {% endfor %}
     
             </div>
@@ -44,6 +50,9 @@
     </div>
 
     <style>
+        body {
+            opacity: 0;
+        }
         #body-container {
             display: flex;
             justify-content: center;
@@ -103,6 +112,7 @@
                 min-width: 16vw !important;
                 min-height: 20vw !important;
                 max-height: 100% !important;
+                /* --border-color: rgba(184, 180, 176, 0.3); */
                 --border-radius: 0.8em;
                 -webkit-border-radius: 0.8em;
                 -moz-border-radius: 0.8em;
@@ -163,8 +173,9 @@
                 border-top: transparent;
                 border-bottom: transparent;
             }
-            a:hover {
-                opacity: 0.8;
+            a:hover sl-card {
+                opacity: 0.9;
+                --border-color: #132c88; 
             }
         }
     </style>
@@ -188,6 +199,7 @@
         ]).then(() => {
         // Add the 'ready' class to fade in the body once all elements are defined
         document.body.classList.add('ready');
+        document.body.style.opacity = 1;
         });
     </script>
 

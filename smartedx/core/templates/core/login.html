@@ -53,7 +53,13 @@
                         {% for error in form.non_field_errors %}
                             <div class="error">{{ error }}</div>
                         {% endfor %}
-                    </sl-alert> 
+                    </sl-alert>
+                {% else %}
+                    <!-- Added so page_load_script works -->
+                    <div style="display: none;">
+                        <sl-alert></sl-alert>
+                        <sl-icon></sl-icon>
+                    </div>
                 {% endif %}
                 
             </sl-card>
@@ -74,6 +80,9 @@
     </div>
     
     <style>
+        body {
+            opacity: 0;
+        }
         /* removes asterisk for required inputs */
         sl-input::part(form-control-label)::after {
             display: none !important;
@@ -166,6 +175,7 @@
         ]).then(() => {
         // Add the 'ready' class to fade in the body once all elements are defined
         document.body.classList.add('ready');
+        document.body.style.opacity = 1;
         });
     </script>
 {% endblock %}

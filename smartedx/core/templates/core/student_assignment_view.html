@@ -1,0 +1,295 @@
+{% extends "core/student_base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block title %} {{ assignment.name }} — {{ course.title }} {% endblock %}
+
+{% block content %}
+
+    <div id="content-div" class="ubuntu-regular">
+
+        <div id="breadcrumb-div">
+            <h2> 
+                <sl-breadcrumb>
+                    <sl-breadcrumb-item href="{% url 'core:student-course-home' course.pk  %}">{{ course.course_code }}</sl-breadcrumb-item>
+                    <sl-breadcrumb-item> ASSIGNMENTS</sl-breadcrumb-item>
+                    </sl-breadcrumb>
+            </h2>
+        </div>
+        <div style="border-left: 2px solid #1535a4; border-right: 2px solid #1535a4; padding-left: 1em; padding-right: 1em; margin-top: 4vh;">
+           
+            <div id="heading-div" style=" color: #1535a4 !important;"> 
+                <strong style="text-decoration: underline; color: #1535a4;">{{ assignment.name }}</strong>
+                {% if not assignment.is_active %}
+                        <sl-badge variant="warning" pill style="margin-left: 10px; font-size: 0.6em !important;">Inactive</sl-badge>
+                {% endif %} 
+                <div style="font-size: 0.7em; margin-top: 2em;">
+                    <div> <strong style="color: #1535a4;">Start Time:</strong> {{ assignment.starts_at|date:"g:i A, F j, Y" }}</div>
+                    <div> <strong style="color: #1535a4;">End Time:</strong> {{ assignment.ends_at|date:"g:i A, F j, Y" }} </div>
+                    <div> <strong style="color: #1535a4;">Grade Scale:</strong> {{ assignment.min_grade }} - {{ assignment.max_grade }} </div>
+                </div>
+    
+                <div id="description" style="margin-top: 3vh;">
+                                    
+                    <sl-details open summary="Description">
+                        <sl-icon name="plus-square" slot="expand-icon"></sl-icon>
+                        <sl-icon name="dash-square" slot="collapse-icon"></sl-icon>
+                        {{ assignment.description }}
+                    </sl-details>      
+                </div>
+                <a href="{{ assignment.file.url }}">
+                    <sl-button class="download" variant="neutral" outline size="small" style="width: 6em; max-width: 100px; margin-top: 10px;"> 
+                        <span><sl-icon name="file-earmark-arrow-down" style="color: #1535a4; margin-bottom: -4px;"></sl-icon></span>
+                        <span style="font-size: 0.8em;"> Download</span> 
+                    </sl-button>
+                </a>
+            </div>
+    
+            <sl-divider style="--spacing: 2rem; --color: #1535a4; --width: 0.3px"></sl-divider>
+
+            <!-- <strong style="text-decoration: underline; font-size: 1.2em; color: #1535a4;"> Submission </strong> -->
+
+            {% if submission %}
+                <div style="color: #1535a4; margin-top: -1rem; margin-bottom: 1rem;"> Submitted at {{ submission.updated_at|date:"g:i A, F j, Y" }}</div>
+            {% else %}
+                <div style="margin-top: -1rem;"></div>
+            {% endif %}
+
+            <form method="post" action="{% url 'core:student-course-assignment' course_uuid=course.pk assignment_id=assignment.pk %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div style="display: none;">
+                    {{ form.assignment }}
+                    {{ form.student }}
+                </div>
+
+                <div class="file has-name is-fullwidth" style="margin-bottom: 0.5em;">
+                    <label class="file-label">
+                        <input class="file-input" type="file" name="file" required  {% if submission %} disabled {% endif %} />
+                    <span class="file-cta">
+                        <sl-icon name="upload" style="font-size: 1.2em; margin-right: 10px;"></sl-icon>
+                        <span class="file-label"> {% if submission %} Change file {% else %} Choose a file... {% endif %} </span>
+                    </span>
+                    <span class="file-name">{% if submission %} {{ submission.filename }} {% elif form.file.value != None %} {{ form.file.filename }} {% else %} No file selected {% endif %} </span>
+                    </label>
+                </div>
+
+                {% if request.method == "POST" and not 'delete' in request.POST %}
+                    <ul> {% for error in form.file.errors %}          
+                            <li>
+                                <div class="error">* {{ error }}</div>
+                            </li>
+                    {% endfor %} 
+                    </ul>
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <ul> {% for error in form.non_field_errors %}
+                            <li>
+                                <div class="error">* {{ error }}</div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                
+                {% if not submission %}
+                    <sl-button type="submit" variant="primary" class="custom-btn" size="small" style="width:100%; margin-top: 5px;"> 
+                        <span style="font-size: 1.2em;"> Submit </span> 
+                    </sl-button>
+                {% endif %}
+
+            </form>
+
+            {% if submission %}
+                <form method="post" action="{% url 'core:student-course-assignment' course_uuid=course.pk assignment_id=assignment.pk %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div style="display: none;">
+                        {{ form }}
+                        <input name="delete" type="text">
+                    </div>
+
+                    <sl-button type="submit" variant="danger" outline class="custom-btn" size="small" style="margin-top: 5px;"> 
+                        <span style="font-size: 1.2em;"> Delete </span> 
+                    </sl-button>
+
+                    <a href="{{ submission.file.url }}" style="margin-left: 5px;">
+                        <sl-button variant="primary" class="custom-btn"  size="small" style="width: 5em; max-width: 100px; margin-top: 5px;"> 
+                            <span><sl-icon name="file-earmark-arrow-down" style="color: #ffffff; margin-bottom: -2px; font-size: 1.3em;"></sl-icon></span>
+                            <span style="font-size: 1.2em; font-weight: bold;"> File </span> 
+                        </sl-button>
+                    </a>
+                </form>
+                
+            {% endif %}
+
+            {% if review %}
+            <sl-divider style="--spacing: 2rem; --color: #1535a4; --width: 0.3px"></sl-divider>
+                
+                <div style="color: #1535a4;">
+                    
+                    <div style="color: #1535a4; margin-top: 0rem;"> Reviewed by: {{ course.instructor.full_name }}</div>
+                    <div style="color: #1535a4; margin-top: 0.3rem;"> Time: {{ review.updated_at|date:"g:i A, F j, Y" }}</div>
+                    <div style="color: #1535a4; margin-top: 0.3rem;"> Grade: <strong>{{ review.grade }}</strong> out of <strong>{{ assignment.max_grade }}</strong> </div>
+                    <div style="margin-top: 0.3em; margin-bottom: 1rem;"> 
+                        <sl-rating label="Rating" readonly precision="0.1" value="{{ review.grade|normalize_rating:assignment.max_grade }}" max="10"></sl-rating>
+                    </div>
+
+                    <div class="box" style="color: #1535a4; background: linear-gradient(45deg, rgb(19, 44, 136, 0.1), rgb(30, 111, 186, 0.2));">
+                        {{ review.remarks }}
+                    </div>
+
+                </div>
+            {% else %}
+                <div style="margin-top: -1rem;"></div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- for page_load_script to work -->
+    <div style="display: none;">
+        <sl-rating></sl-rating>
+    </div>
+
+    <style>
+        body {
+            opacity: 0;
+        }
+        strong {
+            color: #1535a4 !important; 
+        }
+        #content-div {
+            padding: 2vh 3vw 0 3vw;
+            color: #1535a4;
+        }
+        #heading-div {
+            font-size: 1.5em;
+        }
+        #heading-div div div {
+            margin-top: 0.2em;
+        }
+        #description sl-details {
+            font-size: 0.7em;
+            text-align: justify;
+        }
+        sl-details::part(base) {
+            border: none;
+            padding: 0;
+        }
+        sl-details::part(content) {
+            padding: 0;
+        }
+        sl-details::part(header) {
+            padding: 2vh 0 2vh 0;
+        }
+        sl-button.download::part(base) {
+            border-radius: 8px;
+            border: 1.5px solid #1535a4;
+            color: #1535a4;
+            font-size: 1.125rem;
+            background-color: rgb(255, 255, 255);
+        }
+        sl-button.download::part(base):hover {
+            background-color: rgb(41, 142, 236, 0.1);
+        }
+        sl-button.download::part(base):active {
+            opacity: 0.9;
+            background-color: rgb(41, 142, 236, 0.1);
+        }
+        sl-button.custom-btn::part(base) {
+            min-width: 6em;
+            max-width: 6em;
+            font-weight: bold;
+            padding-top: 3px;
+        }
+        /* Small Devices, Tablets */
+        @media only screen and (max-width: 768px) {
+            
+        }
+        /* Medium Devices, Desktops */
+        @media only screen and (min-width: 769px) {
+            #body-container {
+                display: flex;
+                justify-content: center; /* Center horizontally */
+                padding: 20px; /* Optional: Add some padding if needed */
+            }
+            #content-div {
+                max-width: 50vw; /* Adjust max-width as needed */
+                width: 100%;
+            }
+            #breadcrumb-div {
+                margin-left: 0vw;
+                font-size: 1.5em;
+            }
+            sl-breadcrumb-item::part(label) {
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+            #heading-div {
+                font-size: 2em;
+            }
+            #heading-div div {
+                font-size: 0.8em !important;
+                /* margin-top: 0.5em !important; */
+            }
+            #heading-div strong {
+                margin-bottom: 10vh !important;
+            }
+            #description sl-details {
+                font-size: 0.7em;
+            }
+        }
+    </style>
+
+    <!-- bulma css  -->
+    <style>
+        @import "https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css";
+    </style>
+
+
+    <!-- file input script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fileInput = document.querySelector('.file-input');
+            const fileNameSpan = document.querySelector('.file-name');
+
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length > 0) {
+                    fileNameSpan.textContent = fileInput.files[0].name;
+                } else {
+                    fileNameSpan.textContent = 'No file selected';
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block page_load_script %}
+    <script type="module">
+        // Replace 'my-button', 'my-card', and 'my-rating' with your custom element names
+        Promise.allSettled([
+            customElements.whenDefined('sl-button'),
+            customElements.whenDefined('sl-icon'),
+            customElements.whenDefined('sl-dropdown'),
+            customElements.whenDefined('sl-icon-button'),
+            customElements.whenDefined('sl-menu'),
+            customElements.whenDefined('sl-drawer'),
+            customElements.whenDefined('sl-dialog'),
+            customElements.whenDefined('sl-rating'),
+        ]).then(() => {
+        // Add the 'ready' class to fade in the body once all elements are defined
+        document.body.classList.add('ready');
+        document.body.style.opacity = 1;
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+
+    <div style="min-height: 5vh;">
+
+    </div>
+
+{% endblock %}

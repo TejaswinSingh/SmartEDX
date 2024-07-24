@@ -31,9 +31,17 @@
 
         <h1> {{ status }} - {{ status_text }} </h1>
         <h3>{{ err_msg }}</h3>
+
+        <!-- for page_load_script to work -->
+        <sl-card style="display: none;">
+        </sl-card>
+
     </div>
     
     <style>
+        body {
+            opacity: 0;
+        }
         #body-container{
             height: 100%;
             width: 100%;
@@ -75,5 +83,14 @@
 {% endblock %}
 
 {% block page_load_script %}
-
+    <script type="module">
+        // Replace 'my-button', 'my-card', and 'my-rating' with your custom element names
+        Promise.allSettled([
+            customElements.whenDefined('sl-card'),
+        ]).then(() => {
+        // Add the 'ready' class to fade in the body once all elements are defined
+        document.body.classList.add('ready');
+        document.body.style.opacity = 1;
+        });
+    </script>
 {% endblock %}

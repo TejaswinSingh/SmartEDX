@@ -20,7 +20,7 @@
         
     </head>
 
-    <body class="ubuntu-regular">
+    <body class="ubuntu-regular" style="opacity: 0;">
 
         <div class="navbar-crown">&nbsp;</div>
         
@@ -43,6 +43,10 @@
             {% endblock %}
         </div>
 
+        <!-- for page_load_script to work -->
+        <sl-card style="display: none;">
+        </sl-card>
+
         {% block footer %}
         {% endblock %}
 
@@ -50,7 +54,16 @@
         <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"></script>
 
         {% block page_load_script %}
-        
+            <script type="module">
+                // Replace 'my-button', 'my-card', and 'my-rating' with your custom element names
+                Promise.allSettled([
+                    customElements.whenDefined('sl-card'),
+                ]).then(() => {
+                // Add the 'ready' class to fade in the body once all elements are defined
+                document.body.classList.add('ready');
+                document.body.style.opacity = 1;
+                });
+            </script>
         {% endblock %}
 
     </body>

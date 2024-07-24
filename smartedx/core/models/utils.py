@@ -10,13 +10,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 def current_time():
-    return timezone.now()
+    return timezone.localtime(timezone.now())
 
 def current_year():
-    return timezone.now().year
+    return timezone.localtime(timezone.now()).year
 
 def current_date():
-    return timezone.now().date()
+    return timezone.localtime(timezone.now()).date()
 
 def timedelta_to_years(td: timedelta):
     return td.days // 365
@@ -41,6 +41,13 @@ def weekdays_in_range(start_date: date, end_date: date, weekday: int):
 
     return dates
 
+def get_dates_of_week(now: datetime):
+    # -1 because ISO week counts from 1 and we are counting days of week from 0
+    week_day = (now.isocalendar()[2] - 1) 
+    start_date = now - timedelta(days=week_day)
+
+    return [(start_date + timedelta(days=i)).date() for i in range(7)]
+
 def validate_condition(condition: bool, error_msg: str):
     if condition:
         raise ValidationError(error_msg.capitalize())
@@ -53,6 +60,14 @@ def formatted_time(t: time):
 
 def formatted_datetime(dt: datetime) -> str:
     return dt.strftime("%b %d %Y %I:%M %p")
+
+def truncate_float(f, n):
+    '''Truncates/pads a float f to n decimal places'''
+    s = '{}'.format(f)
+    if 'e' in s or 'E' in s:
+        return '{0:.{1}f}'.format(f, n)
+    i, p, d = s.partition('.')
+    return '.'.join([i, (d+'0'*n)[:n]])
 
 
 # NOTE: these variables must be accessible and changeable by admin
@@ -67,7 +82,7 @@ MAX_LECTURE_DURATION = timedelta(minutes=3 * 60)    # 3 hours
 MIN_LECTURE_DURATION = timedelta(minutes=30)        # 30 mins
 DEFAULT_MIN_ATTENDANCE = '75.00'                    # 75 %
 MAX_ASSIGNMENT_REVIEW_TIME = timedelta(days=7)      # 7 days
-MAX_FILE_UPLOAD_SIZE = 10485760                     # 10 MB
+MAX_FILE_UPLOAD_SIZE = 1024 * 1024 * 10             # 10 MB
 
 
 SEMS = '1,2,3,4,5,6,7,8'.replace(' ', '')

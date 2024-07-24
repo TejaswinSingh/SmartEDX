@@ -1,3 +1,4 @@
+import os
 from decimal import Decimal
 from datetime import datetime
 from core.models import ContentSection
@@ -21,6 +22,7 @@ class SectionItemAssignment(models.Model):
         on_delete=models.CASCADE,
         related_name='items_assignment'
     )
+    name = models.CharField(max_length=255)
     description = models.CharField(max_length=2000)
     file = CustomFileField(
         upload_to=file_path, 
@@ -85,6 +87,9 @@ class SectionItemAssignment(models.Model):
         
         if not self.max_grade > self.min_grade:
             raise ValidationError("Max grade must be greater than min grade.")
+        
+    def filename(self):
+        return os.path.basename(self.file.name)
     
 
 class SectionItemAssignmentAdmin(ModelAdmin):

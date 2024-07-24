@@ -1,3 +1,4 @@
+import os
 from core.models import (
     SectionItemAssignment,
     Student
@@ -57,7 +58,7 @@ class AssignmentSubmission(models.Model):
         ]
 
     def __str__(self):
-        return f'submitted by {self.student.full_name()} for {self.assignment}'
+        return f'submitted by {self.student.full_name()} for {self.assignment.name}'
     
     def clean(self):
         from core.models import CourseEnrollment
@@ -83,6 +84,10 @@ class AssignmentSubmission(models.Model):
                 {(cur - self.assignment.ends_at).days} days, \
                 {timedelta_to_hours(cur - self.assignment.ends_at)} hours, \
                 {timedelta_to_mins(cur - self.assignment.ends_at)} mins ago.")
+        
+    def filename(self):
+        return os.path.basename(self.file.name)
+    
 
 class AssignmentSubmissionAdmin(ModelAdmin):
     list_display = ('assignment', 'student', 'file', 'created_at')

@@ -25,7 +25,7 @@
         
     </head>
 
-    <body class="ubuntu-regular">
+    <body class="ubuntu-regular" style="opacity: 0;">
 
         <div class="navbar-crown">&nbsp;</div>
         <div class="navbar">
@@ -109,8 +109,6 @@
                     <li><a href="#link1">Home</a></li>
                     <li><a href="#link2">Dashboard</a></li>
                     <li><a href="{% url 'core:student-my-courses' %}">My Courses</a></li>
-                    <li><a href="#link4">Link 4</a></li>
-                    <li><a href="#link5">Link 5</a></li>
                 </ul>
             </div>
             <sl-button id="menu-drawer-close-btn" slot="footer" variant="primary">Log Out</sl-button>
@@ -151,6 +149,7 @@
                 ]).then(() => {
                 // Add the 'ready' class to fade in the body once all elements are defined
                 document.body.classList.add('ready');
+                document.body.style.opacity = 1;
                 });
             </script>
         {% endblock %}
