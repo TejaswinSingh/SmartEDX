@@ -12,7 +12,7 @@
         <!-- CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css" />
         <link rel="stylesheet" href="{% static 'core/css/fonts.css' %}?{% now 'U' %}">
-        <link rel="stylesheet" href="{% static 'core/css/student_base.css' %}?{% now 'U' %}">
+        <link rel="stylesheet" href="{% static 'student/css/base.css' %}?{% now 'U' %}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,17 +32,17 @@
             
             <!-- Mobile Navbar -->
             <div class="mobile-menu">
-                <sl-icon-button id="menu-drawer-open-btn" src="{% static 'core/img/boxicons/bars-solid.svg' %}" style="margin-left: 2vw;"></sl-icon-button>
+                <sl-icon-button id="menu-drawer-open-btn" src="{% static 'student/img/boxicons/bars-solid.svg' %}" style="margin-left: 2vw;"></sl-icon-button>
                 <ul class="mobile-links">
                     <li>
-                        <sl-icon-button class="search-dialog-open-btn" src="{% static 'core/img/boxicons/bx-search.svg' %}"></sl-icon-button>
+                        <sl-icon-button class="search-dialog-open-btn" src="{% static 'student/img/boxicons/bx-search.svg' %}"></sl-icon-button>
                     </li>
                     <li>
-                        <sl-icon-button class="notification-drawer-open-btn" src="{% static 'core/img/boxicons/bxs-bell.svg' %}"></sl-icon-button>
+                        <sl-icon-button class="notification-drawer-open-btn" src="{% static 'student/img/boxicons/bxs-bell.svg' %}"></sl-icon-button>
                     </li>
                     <li>
                         <sl-dropdown>
-                            <sl-icon-button slot="trigger" caret src="{% static 'core/img/boxicons/bxs-user-circle.svg' %}"></sl-icon-button>
+                            <sl-icon-button slot="trigger" caret src="{% static 'student/img/boxicons/bxs-user-circle.svg' %}"></sl-icon-button>
                             <sl-menu>
                               <sl-menu-item>Dropdown Item 1</sl-menu-item>
                               <sl-menu-item>Dropdown Item 2</sl-menu-item>
@@ -69,17 +69,17 @@
             <ul class="navbar-links desktop-links ubuntu-regular">
                 <li><span>School Name</span></li>
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="{% url 'core:student-my-courses' %}">My Courses</a></li>
+                <li><a href="{% url 'student:dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'student:my-courses' %}">My Courses</a></li>
                 <li>
-                    <sl-icon-button class="search-dialog-open-btn" src="{% static 'core/img/boxicons/bx-search.svg' %}"></sl-icon-button>
+                    <sl-icon-button class="search-dialog-open-btn" src="{% static 'student/img/boxicons/bx-search.svg' %}"></sl-icon-button>
                 </li>
                 <li>
-                    <sl-icon-button class="notification-drawer-open-btn" src="{% static 'core/img/boxicons/bxs-bell.svg' %}"></sl-icon-button>
+                    <sl-icon-button class="notification-drawer-open-btn" src="{% static 'student/img/boxicons/bxs-bell.svg' %}"></sl-icon-button>
                 </li>
                 <li>
                     <sl-dropdown>
-                        <sl-icon-button slot="trigger" caret src="{% static 'core/img/boxicons/bxs-user-circle.svg' %}"></sl-icon-button>
+                        <sl-icon-button slot="trigger" caret src="{% static 'student/img/boxicons/bxs-user-circle.svg' %}"></sl-icon-button>
                         <sl-menu>
                           <sl-menu-item>Dropdown Item 1</sl-menu-item>
                           <sl-menu-item>Dropdown Item 2</sl-menu-item>
@@ -107,8 +107,8 @@
             <div id="menu-content"> 
                 <ul style="list-style-type: none; padding: 0;">
                     <li><a href="#link1">Home</a></li>
-                    <li><a href="#link2">Dashboard</a></li>
-                    <li><a href="{% url 'core:student-my-courses' %}">My Courses</a></li>
+                    <li><a href="{% url 'student:dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'student:my-courses' %}">My Courses</a></li>
                 </ul>
             </div>
             <sl-button id="menu-drawer-close-btn" slot="footer" variant="primary">Log Out</sl-button>

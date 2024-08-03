@@ -11,11 +11,14 @@ def tell(request):
 
 
 def login_view(request):
+    """ renders login page """
+
     next_url = request.GET.get('next', 'core:redirect-user')
+
     if request.method == "POST":   
         form = AuthenticationForm(None, data=request.POST)
         # unlike other forms, AuthenticationForm's is_valid() validates
-        # that a user with the provided credential exists
+        # that a user object with the provided credential exists
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -25,10 +28,20 @@ def login_view(request):
                 return redirect(next_url) 
     else:
         form = AuthenticationForm()
-    return render(request, "core/login.html", context={'form':form, 'next_url': '' if next_url=='core:redirect-user' else next_url})
+
+    return render(
+        request, 
+        template_name = "core/login.html", 
+        context = {
+            'form':form, 
+            'next_url': '' if next_url == 'core:redirect-user' else next_url
+        }
+    )
 
 
 def logout_view(request):
+    """ renders logout page """
+
     if request.method == "POST":
         logout(request)
         return redirect('core:tell')
@@ -38,14 +51,19 @@ def logout_view(request):
 
 @login_required
 def redirect_user(request):
-    """ redirects request depending on the user-type """
+    """ redirects user to their default page depending on their type """
 
-    # is_staff is for admin site
+    # for admin site
     if request.user.is_staff:
         return redirect('/admin/')
     
+    # students
     if hasattr(request.user, 'student'):
-        return redirect('core:student-dashboard')
+        return redirect('student:dashboard')
     
+    # instructors
     if hasattr(request.user, 'staff'):
-        return
+        return HttpResponse("no redirect for staff yet")
+    
+    # if neither case
+    return HttpResponse("no redirect for this user")

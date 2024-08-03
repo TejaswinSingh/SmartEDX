@@ -10,14 +10,3 @@ from .authentication import (
     redirect_user,
     tell,
 )
-from .student_views import (
-    student_dashboard,
-    student_courses,
-)
-from .course_views import (
-    student_course_home,
-    student_course_attendance,
-    student_course_grades,
-    student_course_schedule,
-    student_course_assignment,
-)

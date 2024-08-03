@@ -34,6 +34,7 @@ LOGIN_URL = '/login/'
 
 INSTALLED_APPS = [
     'core',
+    'student',
 
     'unfold', 
     'django.contrib.admin',

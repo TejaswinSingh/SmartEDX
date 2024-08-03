@@ -1,4 +1,4 @@
-{% extends "core/student_base.html" %}
+{% extends "student/base.html" %}
 {% load static %}
 
 {% block title %} {{ student.full_name }} — My Courses {% endblock %}
@@ -22,7 +22,7 @@
     
                 {% for course in courses %}
     
-                <a href="{% url 'core:student-course-home' course.pk  %}">
+                <a href="{% url 'student:course-home' course.pk  %}">
                     <sl-card class="card-basic">
                         <div slot="header" class="card-header">
                             <strong>

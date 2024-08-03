@@ -1,4 +1,4 @@
-{% extends "core/student_base.html" %}
+{% extends "student/base.html" %}
 {% load static %}
 {% load custom_tags %}
 
@@ -11,7 +11,7 @@
         <div id="breadcrumb-div">
             <h2> 
                 <sl-breadcrumb>
-                    <sl-breadcrumb-item href="{% url 'core:student-course-home' course.pk  %}">{{ course.course_code }}</sl-breadcrumb-item>
+                    <sl-breadcrumb-item href="{% url 'student:course-home' course.pk  %}">{{ course.course_code }}</sl-breadcrumb-item>
                     <sl-breadcrumb-item> ASSIGNMENTS</sl-breadcrumb-item>
                     </sl-breadcrumb>
             </h2>
@@ -55,7 +55,7 @@
                 <div style="margin-top: -1rem;"></div>
             {% endif %}
 
-            <form method="post" action="{% url 'core:student-course-assignment' course_uuid=course.pk assignment_id=assignment.pk %}" enctype="multipart/form-data">
+            <form method="post" action="{% url 'student:course-assignment' course_uuid=course.pk assignment_id=assignment.pk %}" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div style="display: none;">
@@ -101,7 +101,7 @@
             </form>
 
             {% if submission %}
-                <form method="post" action="{% url 'core:student-course-assignment' course_uuid=course.pk assignment_id=assignment.pk %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'student:course-assignment' course_uuid=course.pk assignment_id=assignment.pk %}" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <div style="display: none;">

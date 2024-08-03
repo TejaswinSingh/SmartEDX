@@ -1,4 +1,4 @@
-{% extends "core/student_base.html" %}
+{% extends "student/base.html" %}
 {% load static %}
 
 {% block title %} {{ course.course_code }} {{ course.title }} {% endblock %}
@@ -30,10 +30,10 @@
         <sl-divider class="tab-group-divider"></sl-divider>
 
         <sl-tab-group no-scroll-controls="false" >
-            <sl-tab slot="nav" panel="home" data-href="{% url 'core:student-course-home' course.pk  %}" {% if home %} active {% endif %}> <strong>Home</strong> </sl-tab>
-            <sl-tab slot="nav" panel="attendance" data-href="{% url 'core:student-course-attendance' course.pk  %}" {% if attendance %} active {% endif %}> <strong>Attendance</strong> </sl-tab>
-            <sl-tab slot="nav" panel="grades" data-href="{% url 'core:student-course-grades' course.pk  %}" {% if grades %} active {% endif %}> <strong>Grades</strong> </sl-tab>
-            <sl-tab slot="nav" panel="schedule" data-href="{% url 'core:student-course-schedule' course.pk  %}" {% if schedule %} active {% endif %}> <strong>Schedule</strong> </sl-tab>
+            <sl-tab slot="nav" panel="home" data-href="{% url 'student:course-home' course.pk  %}" {% if home %} active {% endif %}> <strong>Home</strong> </sl-tab>
+            <sl-tab slot="nav" panel="attendance" data-href="{% url 'student:course-attendance' course.pk  %}" {% if attendance %} active {% endif %}> <strong>Attendance</strong> </sl-tab>
+            <sl-tab slot="nav" panel="grades" data-href="{% url 'student:course-grades' course.pk  %}" {% if grades %} active {% endif %}> <strong>Grades</strong> </sl-tab>
+            <sl-tab slot="nav" panel="schedule" data-href="{% url 'student:course-schedule' course.pk  %}" {% if schedule %} active {% endif %}> <strong>Schedule</strong> </sl-tab>
           
             {% if home %}
                 <sl-tab-panel name="home">
@@ -85,7 +85,7 @@
                                         </sl-details>
                                     {% elif item.type == 'assignment' %}
                                         <sl-details class="assignment-item" id="{{ item.name }}">
-                                            <a href="{% url 'core:student-course-assignment' course_uuid=course.pk assignment_id=item.pk %}" class="url-link"></a>
+                                            <a href="{% url 'student:course-assignment' course_uuid=course.pk assignment_id=item.pk %}" class="url-link"></a>
                                             <div slot="summary" class="summary">
                                                 <sl-icon name="file-earmark-post"></sl-icon>
                                                 <div class="summary-text">
@@ -201,7 +201,10 @@
                         <table class="attendance-table " style="margin-top: 0vh;">
                             {% for lecture in lectures %}
                             <tr>
-                                <th>{{ lecture.weekday }}</th>
+                                <th>
+                                    <div>{{ lecture.weekday }}</div>
+                                    <div>{{ lecture.date }}</div>
+                                </th>
                                 <td>{{lecture.schedule.start_time|time:"g:i A"}} - {{lecture.schedule.end_time|time:"g:i A"}}</td>
                                 <td>{% if lecture.attended %}
                                     <sl-tag variant="success"> <sl-icon name="check-lg"></sl-icon>
@@ -520,9 +523,10 @@
     <!-- tab navigation script -->
     <script>
         document.querySelectorAll('sl-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
+            tab.addEventListener('click', (event) => {
                 const href = tab.getAttribute('data-href');
                 if (href) {
+                    event.stopPropagation();  // Prevents shifting panel before redirection
                     window.location.href = href;
                 }
             });
